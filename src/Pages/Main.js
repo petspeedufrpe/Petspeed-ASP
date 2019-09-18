@@ -12,13 +12,13 @@ import Geolocation from 'react-native-geolocation-service';
 
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
-export default function Main() {
+export default function Main({navigation}) {
   const [requestMapCameraChange, SetRequestMapCameraChange] = useState(false);
   const [locationGaranted, setLocationGaranted] = useState(false);
   const [region, setRegion] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [userAddress, setUserAddress] = useState(null);
-
+  console.warn(navigation.state.params.data)
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
       Geolocation.getCurrentPosition(
