@@ -8,7 +8,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   ActivityIndicator, 
-  Button,
+  ToastAndroid,
 } from 'react-native';
 
 import * as yup from 'yup';
@@ -18,7 +18,7 @@ import api from '../services/api.js';
 
 export default Login = ({navigation}) =>{
 
-
+  [stateLogin, setStateLogin] = useState(false);
   const validationSchema = yup.object().shape({
     email: yup
       .string()
@@ -31,26 +31,27 @@ export default Login = ({navigation}) =>{
       .required('Favor preencher o campo senha')
   });
   
-  async function handleLogin(values){
-    try{
-    const response = await api.post('/cliente/login',values);
-    const usuario = response.data
-    if(response.status === 200){
-    navigation.navigate('Main',{data:usuario});
-    }
-
-    console.log(response);
-
-  } catch(erro){
-    console.log(erro)
-  }
-    }
-
-
+        handleLogin = async (values) =>{  
+         try{
+           const response = await api.post('/cliente/login',values);
+           const {id} =  response.data;
+           if (response.status === 200) {
+             navigation.navigate('Main',{data:{id}})
+           }
+          }
+          catch(error){
+            return JSON.stringify(error.response.data.message);//gambiarra pra retornar a message de quando n looga
+          }
+        }
+  
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
-      <Formik initialValues={{email:'',senha:''}} onSubmit={(values,actions)=>{
-        handleLogin(values)
+      <Formik initialValues={{email:'',senha:''}} onSubmit={async (values,actions)=>{
+        resp = await handleLogin(values) //gambiarra para pegar o valor de quando nao loga
+        if(resp){
+          ToastAndroid.show(resp,
+          ToastAndroid.SHORT)
+        }
         setTimeout(()=>{
           actions.setSubmitting(false);
         },1000)
@@ -119,7 +120,7 @@ export default Login = ({navigation}) =>{
       </Formik>
     </KeyboardAvoidingView>
   )
-}
+    }
 
 
 const styles = StyleSheet.create({
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     paddingLeft:20,
     paddingRight:20,
-    backgroundColor:'#00A759',
+    backgroundColor:'#00b894',
   },
   input:{
     alignSelf:'stretch',    
