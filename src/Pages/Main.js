@@ -18,7 +18,7 @@ export default function Main({navigation}) {
   const [region, setRegion] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [userAddress, setUserAddress] = useState(null);
-  console.warn(navigation.state.params.data)
+  console.warn(navigation.state.params.data);
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
       Geolocation.getCurrentPosition(

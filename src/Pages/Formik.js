@@ -4,29 +4,24 @@ import {
   TextInput,
   Button,
   ActivityIndicator,
+  StyleSheet,
 } from 'react-native';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 
 export default () => (
-  <SafeAreaView style={{ marginTop: 90 }}>
+  <SafeAreaView style={styles.safeAreaStyle}>
     <Formik
-      initialValues={{ name: '' }}
+      initialValues={{name: ''}}
       onSubmit={(values, actions) => {
         alert(JSON.stringify(values));
         setTimeout(() => {
           actions.setSubmitting(false);
         }, 1000);
-      }}
-    >
+      }}>
       {formikProps => (
         <React.Fragment>
           <TextInput
-            style={{
-              borderWidth: 1,
-              borderColor: 'black',
-              padding: 10,
-              marginBottom: 3,
-            }}
+            style={styles.input}
             onChangeText={formikProps.handleChange('name')}
           />
           {formikProps.isSubmitting ? (
@@ -39,3 +34,14 @@ export default () => (
     </Formik>
   </SafeAreaView>
 );
+const styles = StyleSheet.create({
+  input: {
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 10,
+    marginBottom: 3,
+  },
+  safeAreaStyle: {
+    marginTop: 90,
+  },
+});
