@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   ToastAndroid,
+  Image,
 } from 'react-native';
 
 import * as yup from 'yup';
@@ -19,20 +20,20 @@ export default function Register({navigation}) {
   const [stateRegister, setStateRegister] = useState(false);
   const validationSchema = yup.object().shape({
     nome: yup
-        .string()
-        .label('Nome')
-        .nome('Favor digitar seu nome')
-        .required('Favor preencher campo nome.'),
+      .string()
+      .label('Nome')
+      .nome('Favor digitar seu nome')
+      .required('Favor preencher campo nome.'),
     cpf: yup
-        .string()
-        .label('CPF')
-        .cpf('Favor informe seu cpf corretamente')
-        .required('Favor preencher campo cpf'),
+      .string()
+      .label('CPF')
+      .cpf('Favor informe seu cpf corretamente')
+      .required('Favor preencher campo cpf'),
     crmv: yup
-    .string()
-    .label('CRMV')
-    .cpf('Favor informe seu CRMV corretamente')
-    .required('Favor preencher campo CRMV'),
+      .string()
+      .label('CRMV')
+      .cpf('Favor informe seu CRMV corretamente')
+      .required('Favor preencher campo CRMV'),
 
     email: yup
       .string()
@@ -45,7 +46,7 @@ export default function Register({navigation}) {
       .required('Favor preencher o campo senha'),
   });
 
-  /*async function handleRegister(values) {
+  async function handleRegister(values) {
     try {
       const response = await api.post('/cliente/Register', values);
       const {id} = response.data;
@@ -55,12 +56,12 @@ export default function Register({navigation}) {
     } catch (error) {
       return JSON.stringify(error.response.data.message); //gambiarra pra retornar a message de quando n looga
     }
-  }*/
+  }
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Formik
-        initialValues={{nome: '', cpf: '',crmv: '', email: '', senha: ''}}
+        initialValues={{nome: '', cpf: '', crmv: '', email: '', senha: ''}}
         onSubmit={async (values, actions) => {
           const resp = await handleRegister(values); //gambiarra para pegar o valor de quando nao loga
           if (resp) {
@@ -73,6 +74,10 @@ export default function Register({navigation}) {
         validationSchema={validationSchema}>
         {props => (
           <>
+            <Image
+              source={require('../assets/petspeed-logo-text.png')}
+              resizeMode="center"
+            />
             <TextInput
               placeholder="Digite seu nome"
               style={styles.input}
@@ -88,71 +93,72 @@ export default function Register({navigation}) {
             </Text>
 
             <TextInput
-            placeholder="Digite seu CPF"
-            style={styles.input}
-            returnKeyType={'next'}
-            onChangeText={props.handleChange('cpf')}
-            blurOnSubmit={false}
-            onSubmitEditing={() => this.crmvdRef.focus()} // chama o focus para o proximo
-            keyboardType="cpf"
-            onBlur={props.handleBlur('cpf')}
-            ref={ref => (this.cpfRef = ref)}
-            />
-            <Text style={{color: 'red'}}>
-              {props.touched.cpf && props.errors.cpf}
-            </Text>
-
-             <TextInput
-            placeholder="Digite seu CRMV"
-            style={styles.input}
-            returnKeyType={'next'}
-            onChangeText={props.handleChange('crmv')}
-            blurOnSubmit={false}
-            onSubmitEditing={() => this.emailRef.focus()} // chama o focus para o proximo
-            keyboardType="crmv"
-            onBlur={props.handleBlur('crmv')}
-            ref={ref => (this.crmvdRef = ref)}
+              placeholder="Digite seu CPF"
+              style={styles.input}
+              returnKeyType={'next'}
+              onChangeText={props.handleChange('cpf')}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.crmvdRef.focus()} // chama o focus para o proximo
+              keyboardType="cpf"
+              onBlur={props.handleBlur('cpf')}
+              ref={ref => (this.cpfRef = ref)}
             />
             <Text style={{color: 'red'}}>
               {props.touched.cpf && props.errors.cpf}
             </Text>
 
             <TextInput
-            placeholder="Digite seu e-mail"
-            style={styles.input}
-            returnKeyType={'next'}
-            onChangeText={props.handleChange('email')}
-            blurOnSubmit={false}
-            onSubmitEditing={() => this.passwordRef.focus()} // chama o focus para o proximo
-            keyboardType="email-address"
-            onBlur={props.handleBlur('email')}
-            ref={ref => (this.emailRef = ref)}
+              placeholder="Digite seu CRMV"
+              style={styles.input}
+              returnKeyType={'next'}
+              onChangeText={props.handleChange('crmv')}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.emailRef.focus()} // chama o focus para o proximo
+              keyboardType="crmv"
+              onBlur={props.handleBlur('crmv')}
+              ref={ref => (this.crmvdRef = ref)}
             />
             <Text style={{color: 'red'}}>
-                {props.touched.email && props.errors.email}
+              {props.touched.cpf && props.errors.cpf}
+            </Text>
+
+            <TextInput
+              placeholder="Digite seu e-mail"
+              style={styles.input}
+              returnKeyType={'next'}
+              onChangeText={props.handleChange('email')}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.passwordRef.focus()} // chama o focus para o proximo
+              keyboardType="email-address"
+              onBlur={props.handleBlur('email')}
+              ref={ref => (this.emailRef = ref)}
+            />
+            <Text style={{color: 'red'}}>
+              {props.touched.email && props.errors.email}
             </Text>
             <TextInput
-                style={styles.input}
-                onChangeText={props.handleChange('senha')}
-                onBlur={props.handleBlur('senha')}
-                placeholder="Senha"
-                secureTextEntry={true}
-                ref={ref => (this.passwordRef = ref)} //cria uma referencia desse input
+              style={styles.input}
+              onChangeText={props.handleChange('senha')}
+              onBlur={props.handleBlur('senha')}
+              placeholder="Senha"
+              secureTextEntry={true}
+              ref={ref => (this.passwordRef = ref)} //cria uma referencia desse input
             />
             <Text style={{color: 'red'}}>
-                {props.touched.senha && props.errors.senha}
+              {props.touched.senha && props.errors.senha}
             </Text>
-            
+
             {props.isSubmitting ? (
-                <ActivityIndicator />
+              <ActivityIndicator />
             ) : (
-                <TouchableOpacity
+              <TouchableOpacity
                 style={styles.button}
-                /*onPress={props.handleSubmit}*/>
+                /*onPress={props.handleSubmit}*/
+              >
                 <Text style={styles.buttonText}>Cadastrar Endereço</Text>
-                </TouchableOpacity>
+              </TouchableOpacity>
             )}
-            </>
+          </>
         )}
       </Formik>
     </KeyboardAvoidingView>

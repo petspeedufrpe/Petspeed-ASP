@@ -5,8 +5,11 @@ import Formik from './Pages/Formik';
 import Main from './Pages/Main';
 import RegistrationType from './Pages/RegistrationType';
 import AddressForm from './Pages/AddressForm';
+import UserRegister from './Pages/UserRegister';
+import VetRegister from './Pages/VetRegister';
 const MainNavigator = createStackNavigator(
   {
+    UserRegister,
     Login,
     AddressForm,
     RegistrationType,
