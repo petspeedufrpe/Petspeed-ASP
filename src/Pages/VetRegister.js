@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
-  View,
   Text,
   TextInput,
   TouchableOpacity,
@@ -17,22 +16,18 @@ import {Formik} from 'formik';
 import api from '../services/api.js';
 
 export default function Register({navigation}) {
-  const [stateRegister, setStateRegister] = useState(false);
   const validationSchema = yup.object().shape({
     nome: yup
       .string()
       .label('Nome')
-      .nome('Favor digitar seu nome')
       .required('Favor preencher campo nome.'),
     cpf: yup
       .string()
       .label('CPF')
-      .cpf('Favor informe seu cpf corretamente')
       .required('Favor preencher campo cpf'),
     crmv: yup
       .string()
       .label('CRMV')
-      .cpf('Favor informe seu CRMV corretamente')
       .required('Favor preencher campo CRMV'),
 
     email: yup
@@ -85,7 +80,6 @@ export default function Register({navigation}) {
               onChangeText={props.handleChange('nome')}
               blurOnSubmit={false}
               onSubmitEditing={() => this.cpfRef.focus()} // chama o focus para o proximo
-              keyboardType="name"
               onBlur={props.handleBlur('nome')}
             />
             <Text style={{color: 'red'}}>
@@ -98,8 +92,7 @@ export default function Register({navigation}) {
               returnKeyType={'next'}
               onChangeText={props.handleChange('cpf')}
               blurOnSubmit={false}
-              onSubmitEditing={() => this.crmvdRef.focus()} // chama o focus para o proximo
-              keyboardType="cpf"
+              onSubmitEditing={() => this.crmvRef.focus()} // chama o focus para o proximo
               onBlur={props.handleBlur('cpf')}
               ref={ref => (this.cpfRef = ref)}
             />
@@ -114,9 +107,8 @@ export default function Register({navigation}) {
               onChangeText={props.handleChange('crmv')}
               blurOnSubmit={false}
               onSubmitEditing={() => this.emailRef.focus()} // chama o focus para o proximo
-              keyboardType="crmv"
               onBlur={props.handleBlur('crmv')}
-              ref={ref => (this.crmvdRef = ref)}
+              ref={ref => (this.crmvRef = ref)}
             />
             <Text style={{color: 'red'}}>
               {props.touched.cpf && props.errors.cpf}
@@ -196,7 +188,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Cochin',
     textAlign: 'center',
     color: '#FAFAF2',
-    fontStyle: 'italic',
     alignContent: 'center',
     fontWeight: 'bold',
   },

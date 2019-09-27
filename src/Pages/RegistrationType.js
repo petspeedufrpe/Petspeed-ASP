@@ -15,11 +15,15 @@ export default function RegistrationType({navigation}) {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            navigation.navigate('Login');
+            navigation.navigate('UserRegister');
           }}>
           <Text style={styles.clientButton}>Quero ser cliente</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate('VetRegister');
+          }}>
           <Text style={styles.vetButton}>Sou médico</Text>
         </TouchableOpacity>
       </View>
