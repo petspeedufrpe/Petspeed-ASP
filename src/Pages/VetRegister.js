@@ -57,14 +57,8 @@ export default function Register({navigation}) {
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Formik
         initialValues={{nome: '', cpf: '', crmv: '', email: '', senha: ''}}
-        onSubmit={async (values, actions) => {
-          const resp = await handleRegister(values); //gambiarra para pegar o valor de quando nao loga
-          if (resp) {
-            ToastAndroid.show(resp, ToastAndroid.SHORT);
-          }
-          setTimeout(() => {
-            actions.setSubmitting(false);
-          }, 1000);
+        onSubmit={(values, actions) => {
+          navigation.navigate('AddressForm', {values});
         }}
         validationSchema={validationSchema}>
         {props => (
@@ -145,8 +139,7 @@ export default function Register({navigation}) {
             ) : (
               <TouchableOpacity
                 style={styles.button}
-                /*onPress={props.handleSubmit}*/
-              >
+                onPress={props.handleSubmit}>
                 <Text style={styles.buttonText}>Cadastrar Endereço</Text>
               </TouchableOpacity>
             )}
