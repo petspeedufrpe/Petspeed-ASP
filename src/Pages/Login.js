@@ -17,7 +17,6 @@ import {Formik} from 'formik';
 import api from '../services/api.js';
 
 export default function Login({navigation}) {
-  const [stateLogin, setStateLogin] = useState(false);
   const validationSchema = yup.object().shape({
     email: yup
       .string()

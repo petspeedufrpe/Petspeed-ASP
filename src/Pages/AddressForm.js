@@ -18,14 +18,21 @@ import api from '../services/api.js';
 
 export default function Login({navigation}) {
   const validationSchema = yup.object().shape({
-    email: yup
+    cidade: yup
       .string()
-      .label('Email')
-      .email('Favor digitar um email válido.')
-      .required('Favor preencher o campo email.'),
-    senha: yup
+      .label('Cidade')
+      .required('Favor preencher o campo cidade.'),
+    bairro: yup
       .string()
-      .label('Senha')
+      .label('Bairro')
+      .required('Favor preencher o campo bairro'),
+    rua: yup
+      .string()
+      .label('Rua')
+      .required('Favor preencher o campo rua'),
+    numero: yup
+      .number()
+      .label('Numero')
       .required('Favor preencher o campo senha'),
   });
 
@@ -44,7 +51,7 @@ export default function Login({navigation}) {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Formik
-        initialValues={{email: '', senha: ''}}
+        initialValues={{cidade: '', bairro: '', rua: '', numero: ''}}
         onSubmit={async (values, actions) => {
           const resp = await handleLogin(values); //gambiarra para pegar o valor de quando nao loga
           if (resp) {
@@ -62,28 +69,53 @@ export default function Login({navigation}) {
               resizeMode="center"
             />
             <TextInput
-              placeholder="Digite seu e-mail"
+              placeholder="Cidade"
               style={styles.input}
               returnKeyType={'next'}
-              onChangeText={props.handleChange('email')}
+              onChangeText={props.handleChange('cidade')}
               blurOnSubmit={false}
-              onSubmitEditing={() => this.passwordRef.focus()} // chama o focus para o proximo
-              keyboardType="email-address"
-              onBlur={props.handleBlur('email')}
+              onSubmitEditing={() => this.bairroRef.focus()} // chama o focus para o proximo
+              onBlur={props.handleBlur('cidade')}
+              ref={ref => (this.cidadeRef = ref)}
             />
             <Text style={{color: 'red'}}>
-              {props.touched.email && props.errors.email}
+              {props.touched.cidade && props.errors.cidade}
+            </Text>
+            <TextInput
+              placeholder="Bairro"
+              style={styles.input}
+              returnKeyType={'next'}
+              onChangeText={props.handleChange('bairro')}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.ruaRef.focus()} // chama o focus para o proximo
+              onBlur={props.handleBlur('bairro')}
+              ref={ref => (this.bairroRef = ref)}
+            />
+            <Text style={{color: 'red'}}>
+              {props.touched.bairro && props.errors.bairro}
             </Text>
             <TextInput
               style={styles.input}
-              onChangeText={props.handleChange('senha')}
-              onBlur={props.handleBlur('senha')}
-              placeholder="Senha"
+              onChangeText={props.handleChange('rua')}
+              onSubmitEditing={() => this.numeroRef.focus()}
+              onBlur={props.handleBlur('rua')}
+              placeholder="Rua"
               secureTextEntry={true}
-              ref={ref => (this.passwordRef = ref)} //cria uma referencia desse input
+              ref={ref => (this.ruaRef = ref)} //cria uma referencia desse input
             />
             <Text style={{color: 'red'}}>
-              {props.touched.senha && props.errors.senha}
+              {props.touched.rua && props.errors.rua}
+            </Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={props.handleChange('numero')}
+              onBlur={props.handleBlur('numero')}
+              placeholder="Numero"
+              secureTextEntry={true}
+              ref={ref => (this.numeroRef = ref)} //cria uma referencia desse input
+            />
+            <Text style={{color: 'red'}}>
+              {props.touched.numero && props.errors.numero}
             </Text>
             {props.isSubmitting ? (
               <ActivityIndicator />
@@ -91,27 +123,9 @@ export default function Login({navigation}) {
               <TouchableOpacity
                 style={styles.button}
                 onPress={props.handleSubmit}>
-                <Text style={styles.buttonText}>LOGIN</Text>
+                <Text style={styles.buttonText}>CADASTRAR</Text>
               </TouchableOpacity>
             )}
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('RegistrationType');
-              }}>
-              <Text>Novo por aqui? Inscreva-se agora.</Text>
-            </TouchableOpacity>
-            <View style={styles.passordRecoverContainer}>
-              <Text style={styles.alternativeMessage}>
-                ___________________OU___________________
-              </Text>
-              <TouchableOpacity
-                style={styles.lostPasswordMessage}
-                onPress={() => {
-                  navigation.navigate('AddressForm');
-                }}>
-                <Text>Esqueci Minha Senha.</Text>
-              </TouchableOpacity>
-            </View>
           </>
         )}
       </Formik>
