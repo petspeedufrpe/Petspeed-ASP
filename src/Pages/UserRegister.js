@@ -76,7 +76,6 @@ export default function Register({navigation}) {
               onChangeText={props.handleChange('nome')}
               blurOnSubmit={false}
               onSubmitEditing={() => this.cpfRef.focus()} // chama o focus para o proximo
-              keyboardType="name"
               onBlur={props.handleBlur('nome')}
               ref={ref => (this.nomeRef = ref)}
             />
