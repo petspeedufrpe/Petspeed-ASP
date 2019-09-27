@@ -19,9 +19,6 @@ export default function Main({navigation}) {
   const [userLocation, setUserLocation] = useState(null);
   const [userAddress, setUserAddress] = useState(null);
   const {email} = navigation.state.params.data;
-  useEffect(()=>{
-    ToastAndroid.show('Olá '+email+'\nBem Vindo!',ToastAndroid.SHORT);
-  },[])
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
       Geolocation.getCurrentPosition(
@@ -42,7 +39,7 @@ export default function Main({navigation}) {
           setUserLocation(location);
           setUserAddress(address);
 
-          alert(`você está em : ${address}`);
+          alert(`Olá ${email}!\nVocê está em: ${address}`);
         },
         error => {
           // See error code charts below.
