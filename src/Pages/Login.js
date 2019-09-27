@@ -104,17 +104,12 @@ export default function Login({navigation}) {
               <Text style={styles.alternativeMessage}>
                 ___________________OU___________________
               </Text>
-<<<<<<< HEAD
               <TouchableOpacity
 
                 onPress={() => {
                   navigation.navigate('AddressForm');
                 }}>
                 <Text style={styles.lostPasswordMessage}>Esqueci Minha Senha.</Text>
-=======
-              <TouchableOpacity style={styles.lostPasswordMessage}>
-                <Text>Esqueci Minha Senha.</Text>
->>>>>>> ce281a976a877d0069aa9b0cf696b2336861e229
               </TouchableOpacity>
             </View>
           </>
