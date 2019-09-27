@@ -38,14 +38,22 @@ export default function Register({navigation}) {
   });
 
   async function handleRegister(values) {
+    const {nome,cpf,email,senha} = values;
     try {
-      const response = await api.post('/cliente/Register', values);
-      const {id} = response.data;
-      if (response.status === 200) {
-        navigation.navigate('Main', {data: {id}});
+      const usuario = await api.post('/usuario/cadastrarUsuario', {email,senha});
+      const {id:idusuario} = usuario.data;
+      if (usuario.status === 200) {
+      const pessoa = await api.post('/pessoa/cadastrarPessoa',{nome,cpf,idusuario});
+      const {id:idpessoa} = pessoa.data;
+      if (pessoa.status === 200) {
+        const cliente = await api.post('/cliente/cadastrarCliente', {idpessoa,idusuario});
+        if(cliente.status === 200){
+          navigation.navigate('Login');
+        }
+      }
       }
     } catch (error) {
-      return JSON.stringify(error.response.data.message); //gambiarra pra retornar a message de quando n looga
+      return JSON.stringify(error.response.data); //gambiarra pra retornar a message de quando n looga
     }
   }
 
