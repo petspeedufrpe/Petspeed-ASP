@@ -39,7 +39,7 @@ export default function Main({navigation}) {
           setUserLocation(location);
           setUserAddress(address);
 
-          alert(`Olá ${email}!\nVocê está em: ${address}`);
+          alert(`Bem vindo ${email}!\n\nVocê está em: ${address}`);
         },
         error => {
           // See error code charts below.
