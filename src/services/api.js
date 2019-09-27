@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://192.168.0.9:4000',
-
+  baseURL: 'http://petspeed.herokuapp.com/',
 });
 
 export default api;

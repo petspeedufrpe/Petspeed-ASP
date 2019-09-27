@@ -26,7 +26,7 @@ export default function Login({navigation}) {
     senha: yup
       .string()
       .label('Senha')
-      .required('Favor preencher o campo senha'),
+      .required('Favor preencher o campo senha.'),
   });
 
   async function handleLogin(values) {
@@ -98,18 +98,18 @@ export default function Login({navigation}) {
               onPress={() => {
                 navigation.navigate('RegistrationType');
               }}>
-              <Text>Novo por aqui? Inscreva-se agora.</Text>
+              <Text style={styles.alternativeMessage}>Novo por aqui? Inscreva-se agora.</Text>
             </TouchableOpacity>
-            <View style={styles.passordRecoverContainer}>
+            <View style={styles.passwordRecoverContainer}>
               <Text style={styles.alternativeMessage}>
                 ___________________OU___________________
               </Text>
               <TouchableOpacity
-                style={styles.lostPasswordMessage}
+
                 onPress={() => {
                   navigation.navigate('AddressForm');
                 }}>
-                <Text>Esqueci Minha Senha.</Text>
+                <Text style={styles.lostPasswordMessage}>Esqueci Minha Senha.</Text>
               </TouchableOpacity>
             </View>
           </>
@@ -159,17 +159,27 @@ const styles = StyleSheet.create({
     marginBottom: -20,
     fontSize: 12,
   },
-  passordRecoverContainer: {
+  passwordRecoverContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   alternativeMessage: {
-    marginTop: 40,
-    marginBottom: 20,
+    marginVertical: 30,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#FFF',
+    textShadowColor: '#000'
   },
   lostPasswordMessage: {
     justifyContent: 'center',
     alignContent: 'center',
+    marginVertical: 30,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#FFF',
+    textShadowColor: '#000'
   },
 });
