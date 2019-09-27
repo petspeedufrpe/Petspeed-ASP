@@ -18,7 +18,10 @@ export default function Main({navigation}) {
   const [region, setRegion] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [userAddress, setUserAddress] = useState(null);
-  console.warn(navigation.state.params.data);
+  const {email} = navigation.state.params.data;
+  useEffect(()=>{
+    ToastAndroid.show('Olá '+email+'\nBem Vindo!',ToastAndroid.SHORT);
+  },[])
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
       Geolocation.getCurrentPosition(

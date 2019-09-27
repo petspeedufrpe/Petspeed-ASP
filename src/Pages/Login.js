@@ -32,9 +32,9 @@ export default function Login({navigation}) {
   async function handleLogin(values) {
     try {
       const response = await api.post('/cliente/login', values);
-      const {id} = response.data;
+      const cliente = response.data;
       if (response.status === 200) {
-        navigation.navigate('Main', {data: {id}});
+        navigation.navigate('Main', {data: cliente});
       }
     } catch (error) {
       return JSON.stringify(error.response.data.message); //gambiarra pra retornar a message de quando n looga
@@ -42,7 +42,6 @@ export default function Login({navigation}) {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Formik
         initialValues={{email: '', senha: ''}}
         onSubmit={async (values, actions) => {
@@ -115,7 +114,6 @@ export default function Login({navigation}) {
           </>
         )}
       </Formik>
-    </KeyboardAvoidingView>
   );
 }
 

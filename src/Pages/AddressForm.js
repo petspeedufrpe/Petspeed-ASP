@@ -36,11 +36,11 @@ export default function Login({navigation}) {
       .required('Favor preencher o campo senha'),
   });
 
-  async function handleLogin(values) {
+  async function handleAddress(values) {
     try {
+      const pessoa = await api.post('/pessoa/');
       const response = await api.post('/pessoa/cadastrarEndereco', values);
       console.warn(response);
-      const {id} = response.data;
       if (response.status === 200) {
         navigation.navigate('Main', {data: {id}});
       }

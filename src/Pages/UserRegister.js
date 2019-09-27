@@ -58,7 +58,6 @@ export default function Register({navigation}) {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Formik
         initialValues={{nome: '', cpf: '', email: '', senha: ''}}
         onSubmit={async (values, actions) => {
@@ -141,7 +140,6 @@ export default function Register({navigation}) {
           </>
         )}
       </Formik>
-    </KeyboardAvoidingView>
   );
 }
 //arrumar style
