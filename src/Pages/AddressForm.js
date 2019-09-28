@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  SafeAreaView,
+  ScrollView,
   KeyboardAvoidingView,
   ActivityIndicator,
   ToastAndroid,
@@ -16,7 +18,7 @@ import {Formik} from 'formik';
 
 import api from '../services/api.js';
 
-export default function Login({navigation}) {
+export default function AddressForm({navigation}) {
   const validationSchema = yup.object().shape({
     cidade: yup
       .string()
@@ -25,20 +27,27 @@ export default function Login({navigation}) {
     bairro: yup
       .string()
       .label('Bairro')
-      .required('Favor preencher o campo bairro'),
-    rua: yup
+      .required('Favor preencher o campo bairro.'),
+    logradouro: yup
       .string()
-      .label('Rua')
-      .required('Favor preencher o campo rua'),
+      .label('Logradouro')
+      .required('Favor preencher o campo logradouro.'),
     numero: yup
       .number()
       .label('Numero')
-      .required('Favor preencher o campo senha'),
+      .required('Favor preencher o campo numero.'),
+    cep: yup
+      .number()
+      .label('cep')
+      .required('Favor preencher o campo CEP.'),
+    complemento: yup
+      .string()
+      .label('Complemento')
+      .required('Favor preencher o campo complemento.'),
   });
 
   async function handleAddress(values) {
     try {
-      const pessoa = await api.post('/pessoa/');
       const response = await api.post('/pessoa/cadastrarEndereco', values);
       console.warn(response);
       if (response.status === 200) {
@@ -50,11 +59,19 @@ export default function Login({navigation}) {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <View style={styles.container} behavior="padding">
       <Formik
-        initialValues={{cidade: '', bairro: '', rua: '', numero: ''}}
+        initialValues={{
+          cidade: '',
+          bairro: '',
+          logradouro: '',
+          numero: '',
+          complemento: '',
+          cep: '',
+        }}
+        setFieldValue={{field: 'cep', value: '12421', shouldValidate: false}}
         onSubmit={async (values, actions) => {
-          const resp = await handleLogin(values); //gambiarra para pegar o valor de quando nao loga
+          const resp = await handleAddress(values); //gambiarra para pegar o valor de quando nao loga
           if (resp) {
             ToastAndroid.show(resp, ToastAndroid.SHORT);
           }
@@ -69,6 +86,20 @@ export default function Login({navigation}) {
               source={require('../assets/petspeed-logo-text.png')}
               resizeMode="center"
             />
+            <TextInput
+              style={styles.input}
+              returnKeyType={'next'}
+              onChangeText={props.handleChange('cep')}
+              onBlur={props.handleBlur('cep')}
+              onSubmitEditing={() => this.cidadeRef.focus()}
+              placeholder="CEP"
+              keyboardType="numeric"
+              secureTextEntry={true}
+              ref={ref => (this.cepRef = ref)} //cria uma referencia desse input
+            />
+            <Text style={{color: 'red'}}>
+              {props.touched.cep && props.errors.cep}
+            </Text>
             <TextInput
               placeholder="Cidade"
               style={styles.input}
@@ -88,7 +119,7 @@ export default function Login({navigation}) {
               returnKeyType={'next'}
               onChangeText={props.handleChange('bairro')}
               blurOnSubmit={false}
-              onSubmitEditing={() => this.ruaRef.focus()} // chama o focus para o proximo
+              onSubmitEditing={() => this.logradouroRef.focus()} // chama o focus para o proximo
               onBlur={props.handleBlur('bairro')}
               ref={ref => (this.bairroRef = ref)}
             />
@@ -97,26 +128,41 @@ export default function Login({navigation}) {
             </Text>
             <TextInput
               style={styles.input}
-              onChangeText={props.handleChange('rua')}
+              returnKeyType={'next'}
+              onChangeText={props.handleChange('logradouro')}
               onSubmitEditing={() => this.numeroRef.focus()}
-              onBlur={props.handleBlur('rua')}
-              placeholder="Rua"
+              onBlur={props.handleBlur('logradouro')}
+              placeholder="Logradouro (Av. Agamenon Magalhães)"
               secureTextEntry={true}
-              ref={ref => (this.ruaRef = ref)} //cria uma referencia desse input
+              ref={ref => (this.logradouroRef = ref)} //cria uma referencia desse input
             />
             <Text style={{color: 'red'}}>
-              {props.touched.rua && props.errors.rua}
+              {props.touched.logradouro && props.errors.logradouro}
             </Text>
             <TextInput
               style={styles.input}
+              returnKeyType={'next'}
               onChangeText={props.handleChange('numero')}
               onBlur={props.handleBlur('numero')}
+              onSubmitEditing={() => this.complementoRef.focus()}
               placeholder="Numero"
+              keyboardType="numeric"
               secureTextEntry={true}
               ref={ref => (this.numeroRef = ref)} //cria uma referencia desse input
             />
             <Text style={{color: 'red'}}>
               {props.touched.numero && props.errors.numero}
+            </Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={props.handleChange('complemento')}
+              onBlur={props.handleBlur('complemento')}
+              placeholder="Complemento (apartamento 601 , bloco C)"
+              secureTextEntry={true}
+              ref={ref => (this.complementoRef = ref)} //cria uma referencia desse input
+            />
+            <Text style={{color: 'red'}}>
+              {props.touched.complemento && props.errors.complemento}
             </Text>
             {props.isSubmitting ? (
               <ActivityIndicator />
@@ -130,7 +176,7 @@ export default function Login({navigation}) {
           </>
         )}
       </Formik>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
@@ -148,7 +194,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     fontSize: 16,
     backgroundColor: '#FAFAF2',
-    marginVertical: 10,
+    marginVertical: 5,
   },
   button: {
     alignSelf: 'stretch',

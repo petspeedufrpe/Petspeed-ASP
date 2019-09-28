@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  PermissionsAndroid,
-  ToastAndroid,
-  View,
-  Text,
-  StyleSheet,
-} from 'react-native';
+import {PermissionsAndroid, View, StyleSheet} from 'react-native';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
@@ -16,8 +10,6 @@ export default function Main({navigation}) {
   const [requestMapCameraChange, SetRequestMapCameraChange] = useState(false);
   const [locationGaranted, setLocationGaranted] = useState(false);
   const [region, setRegion] = useState(null);
-  const [userLocation, setUserLocation] = useState(null);
-  const [userAddress, setUserAddress] = useState(null);
   const {email} = navigation.state.params.data;
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
@@ -26,8 +18,6 @@ export default function Main({navigation}) {
           const response = await Geocoder.from({latitude, longitude});
           const address = response.results[0].formatted_address;
           const location = address.substring(0, address.indexOf(','));
-          console.log(latitude, longitude);
-          console.log(location, address);
 
           setRegion({
             latitude: latitude,
@@ -35,9 +25,6 @@ export default function Main({navigation}) {
             latitudeDelta: 0.0143,
             longitudeDelta: 0.0134,
           });
-
-          setUserLocation(location);
-          setUserAddress(address);
 
           alert(`Bem vindo ${email}!\n\nVocê está em: ${address}`);
         },
@@ -53,7 +40,7 @@ export default function Main({navigation}) {
       );
     }
     SetRequestMapCameraChange(false);
-  }, [locationGaranted, requestMapCameraChange]);
+  }, [email, locationGaranted, requestMapCameraChange]);
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
-  KeyboardAvoidingView,
   ActivityIndicator,
   ToastAndroid,
 } from 'react-native';
@@ -98,18 +97,21 @@ export default function Login({navigation}) {
               onPress={() => {
                 navigation.navigate('RegistrationType');
               }}>
-              <Text style={styles.alternativeMessage}>Novo por aqui? Inscreva-se agora.</Text>
+              <Text style={styles.alternativeMessage}>
+                Novo por aqui? Inscreva-se agora.
+              </Text>
             </TouchableOpacity>
             <View style={styles.passwordRecoverContainer}>
               <Text style={styles.alternativeMessage}>
                 ___________________OU___________________
               </Text>
               <TouchableOpacity
-
                 onPress={() => {
                   navigation.navigate('AddressForm');
                 }}>
-                <Text style={styles.lostPasswordMessage}>Esqueci Minha Senha.</Text>
+                <Text style={styles.lostPasswordMessage}>
+                  Esqueci Minha Senha.
+                </Text>
               </TouchableOpacity>
             </View>
           </>
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     color: '#FFF',
-    textShadowColor: '#000'
+    textShadowColor: '#000',
   },
   lostPasswordMessage: {
     justifyContent: 'center',
@@ -180,6 +182,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     color: '#FFF',
-    textShadowColor: '#000'
+    textShadowColor: '#000',
   },
 });
