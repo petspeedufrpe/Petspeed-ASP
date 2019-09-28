@@ -30,7 +30,7 @@ export default function Login({navigation}) {
 
   async function handleLogin(values) {
     try {
-      const response = await api.post('/cliente/login', values);
+      const response = await api.post('/usuario/login', values);
       const cliente = response.data;
       if (response.status === 200) {
         navigation.navigate('Main', {data: cliente});
