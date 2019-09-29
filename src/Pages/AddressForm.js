@@ -48,10 +48,11 @@ export default function AddressForm({navigation}) {
 
   async function handleAddress(values) {
     try {
+      values = {...values, id: 16};
       const response = await api.post('/pessoa/cadastrarEndereco', values);
       console.warn(response);
       if (response.status === 200) {
-        navigation.navigate('Main', {data: {id}});
+        navigation.navigate('Main');
       }
     } catch (error) {
       return JSON.stringify(error.response.data.message); //gambiarra pra retornar a message de quando n looga
@@ -69,7 +70,6 @@ export default function AddressForm({navigation}) {
           complemento: '',
           cep: '',
         }}
-        setFieldValue={{field: 'cep', value: '12421', shouldValidate: false}}
         onSubmit={async (values, actions) => {
           const resp = await handleAddress(values); //gambiarra para pegar o valor de quando nao loga
           if (resp) {
@@ -94,7 +94,7 @@ export default function AddressForm({navigation}) {
               onSubmitEditing={() => this.cidadeRef.focus()}
               placeholder="CEP"
               keyboardType="numeric"
-              secureTextEntry={true}
+              secureTextEntry={false}
               ref={ref => (this.cepRef = ref)} //cria uma referencia desse input
             />
             <Text style={{color: 'red'}}>
@@ -133,7 +133,7 @@ export default function AddressForm({navigation}) {
               onSubmitEditing={() => this.numeroRef.focus()}
               onBlur={props.handleBlur('logradouro')}
               placeholder="Logradouro (Av. Agamenon Magalhães)"
-              secureTextEntry={true}
+              secureTextEntry={false}
               ref={ref => (this.logradouroRef = ref)} //cria uma referencia desse input
             />
             <Text style={{color: 'red'}}>
@@ -147,7 +147,7 @@ export default function AddressForm({navigation}) {
               onSubmitEditing={() => this.complementoRef.focus()}
               placeholder="Numero"
               keyboardType="numeric"
-              secureTextEntry={true}
+              secureTextEntry={false}
               ref={ref => (this.numeroRef = ref)} //cria uma referencia desse input
             />
             <Text style={{color: 'red'}}>
@@ -158,7 +158,7 @@ export default function AddressForm({navigation}) {
               onChangeText={props.handleChange('complemento')}
               onBlur={props.handleBlur('complemento')}
               placeholder="Complemento (apartamento 601 , bloco C)"
-              secureTextEntry={true}
+              secureTextEntry={false}
               ref={ref => (this.complementoRef = ref)} //cria uma referencia desse input
             />
             <Text style={{color: 'red'}}>

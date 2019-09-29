@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {PermissionsAndroid, View, StyleSheet} from 'react-native';
+import {PermissionsAndroid, View, StyleSheet, Text} from 'react-native';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
+import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from 'react-native-geolocation-service';
 
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
@@ -10,7 +11,8 @@ export default function Main({navigation}) {
   const [requestMapCameraChange, SetRequestMapCameraChange] = useState(false);
   const [locationGaranted, setLocationGaranted] = useState(false);
   const [region, setRegion] = useState(null);
-  const {email} = navigation.state.params.data;
+  const [user, setUser] = useState({});
+
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
       Geolocation.getCurrentPosition(
@@ -26,7 +28,7 @@ export default function Main({navigation}) {
             longitudeDelta: 0.0134,
           });
 
-          alert(`Bem vindo ${email}!\n\nVocê está em: ${address}`);
+          alert(`Bem vindo ${'email'}!\n\nVocê está em: ${address}`);
         },
         error => {
           // See error code charts below.
@@ -40,7 +42,17 @@ export default function Main({navigation}) {
       );
     }
     SetRequestMapCameraChange(false);
-  }, [email, locationGaranted, requestMapCameraChange]);
+  }, [locationGaranted, requestMapCameraChange]);
+
+  useEffect(() => {
+    async () => {
+      const id = await AsyncStorage.getItem('user_id');
+      const token = await AsyncStorage.getItem('user_token');
+      console.warn(id);
+      setUser({id, token});
+      console.warn(user);
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -56,6 +68,9 @@ export default function Main({navigation}) {
           SetRequestMapCameraChange(true);
         }}
       />
+      <View>
+        <Text style={{fontSize: 20}}>hello world</Text>
+      </View>
     </View>
   );
 }

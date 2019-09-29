@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   ToastAndroid,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import * as yup from 'yup';
 import {Formik} from 'formik';
@@ -31,9 +32,20 @@ export default function Login({navigation}) {
   async function handleLogin(values) {
     try {
       const response = await api.post('/usuario/login', values);
-      const cliente = response.data;
       if (response.status === 200) {
-        navigation.navigate('Main', {data: cliente});
+        const res = response.data;
+        const {id} = res.user;
+        console.warn(id);
+        const {token} = res;
+        AsyncStorage.setItem('userid', id);
+        AsyncStorage.setItem('usertoken', token);
+        try {
+          const tokeng = await AsyncStorage.getItem('userid');
+          alert(tokeng);
+        } catch (e) {
+          alert(e.message);
+        }
+        navigation.navigate('Main');
       }
     } catch (error) {
       return JSON.stringify(error.response.data.message); //gambiarra pra retornar a message de quando n looga
