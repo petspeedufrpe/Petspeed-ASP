@@ -45,7 +45,7 @@ export default function Login({navigation}) {
         } catch (e) {
           alert(e.message);
         }
-        navigation.navigate('Main');
+        navigation.navigate('Main', 'UserProfile');
       }
     } catch (error) {
       return JSON.stringify(error.response.data.message); //gambiarra pra retornar a message de quando n looga
@@ -119,7 +119,7 @@ export default function Login({navigation}) {
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('AddressForm');
+                  navigation.navigate('UserProfile');
                 }}>
                 <Text style={styles.lostPasswordMessage}>
                   Esqueci Minha Senha.
