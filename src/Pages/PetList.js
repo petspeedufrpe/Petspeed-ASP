@@ -9,7 +9,7 @@ import { View,
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-export default function Login({navigation}) {
+export default function PetList({navigation}) {
   return (
     <View style={styles.container}>
         <TouchableOpacity

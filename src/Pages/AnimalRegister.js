@@ -17,7 +17,7 @@ import {Formik} from 'formik';
 import api from '../services/api.js';
 import { whileStatement } from '@babel/types';
 
-export default function Register({navigation}) {
+export default function AnimalRegister({navigation}) {
   const validationSchema = yup.object().shape({
     nome: yup
       .string()
