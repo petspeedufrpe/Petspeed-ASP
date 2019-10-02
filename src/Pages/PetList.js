@@ -7,8 +7,6 @@ import { View,
          TouchableOpacity,
          } from 'react-native'
 
-import AsyncStorage from '@react-native-community/async-storage';
-
 export default function PetList({navigation}) {
   return (
     <View style={styles.container}>

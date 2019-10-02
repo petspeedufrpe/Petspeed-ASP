@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {PermissionsAndroid, View, StyleSheet, Text} from 'react-native';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
-import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from 'react-native-geolocation-service';
+import getRealm from '../services/realmConnection';
 
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
@@ -44,15 +44,11 @@ export default function Main({navigation}) {
     SetRequestMapCameraChange(false);
   }, [locationGaranted, requestMapCameraChange]);
 
-  useEffect(() => {
-    async () => {
-      const id = await AsyncStorage.getItem('user_id');
-      const token = await AsyncStorage.getItem('user_token');
-      console.warn(id);
-      setUser({id, token});
-      console.warn(user);
-    };
-  }, []);
+  async function loadUser() {
+    const realm = await getRealm();
+
+    setUser(realm.objects('User')[0]);
+  }
 
   return (
     <View style={styles.container}>

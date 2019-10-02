@@ -9,12 +9,12 @@ import {
   ActivityIndicator,
   ToastAndroid,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import * as yup from 'yup';
 import {Formik} from 'formik';
 
 import api from '../services/api.js';
+import getRealm from '../services/realmConnection.js';
 
 export default function Login({navigation}) {
   const validationSchema = yup.object().shape({
@@ -34,14 +34,18 @@ export default function Login({navigation}) {
       const response = await api.post('/usuario/login', values);
       if (response.status === 200) {
         const res = response.data;
-        const {id} = res.user;
-        console.warn(id);
+        const {id, email} = res.user;
         const {token} = res;
-        AsyncStorage.setItem('userid', id);
-        AsyncStorage.setItem('usertoken', token);
+        const data = {
+          id,
+          token,
+          email,
+        };
         try {
-          const tokeng = await AsyncStorage.getItem('userid');
-          alert(tokeng);
+          const realm = await getRealm();
+          realm.write(() => {
+            realm.create('User', data, 'modified');
+          });
         } catch (e) {
           alert(e.message);
         }
