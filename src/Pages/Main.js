@@ -4,6 +4,7 @@ import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
 import getRealm from '../services/realmConnection';
+import BottomNavBar from '../components/bottomNavBar';
 
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
@@ -51,23 +52,23 @@ export default function Main({navigation}) {
   }
 
   return (
-    <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        showsUserLocation={true}
-        region={region}
-        onMapReady={async () => {
-          await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          );
-          setLocationGaranted(true);
-          SetRequestMapCameraChange(true);
-        }}
-      />
-      <View>
-        <Text style={{fontSize: 20}}>hello world</Text>
+    <>
+      <View style={styles.container}>
+        <MapView
+          style={styles.map}
+          showsUserLocation={true}
+          region={region}
+          onMapReady={async () => {
+            await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            );
+            setLocationGaranted(true);
+            SetRequestMapCameraChange(true);
+          }}
+        />
       </View>
-    </View>
+      <BottomNavBar navigation={navigation} />
+    </>
   );
 }
 
