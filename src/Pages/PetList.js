@@ -27,7 +27,11 @@ useEffect(()=>{
   }
   loadAnimals();
 },[]);
-
+const renderEmpty = ()=>(
+  <View style={styles.empty}>
+    <Text style={styles.textIsEmpty}> Você não possui nenhum pet cadastrado, favor cadastre um novo</Text>
+  </View>
+)
   return (
     <>
     <View style={{flex:3}}>

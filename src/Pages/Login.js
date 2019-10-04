@@ -41,11 +41,13 @@ export default function Login({navigation}) {
           token,
           email,
         };
+        console.warn(data);
         try {
           const realm = await getRealm();
           realm.write(() => {
-            realm.create('User', data, 'modified');
+            realm.create('User', data,true);
           });
+          console.warn(realm.objects('User'));
         } catch (e) {
           alert(e.message);
         }
@@ -121,10 +123,7 @@ export default function Login({navigation}) {
               <Text style={styles.alternativeMessage}>
                 ___________________OU___________________
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('UserProfile');
-                }}>
+              <TouchableOpacity>
                 <Text style={styles.lostPasswordMessage}>
                   Esqueci Minha Senha.
                 </Text>

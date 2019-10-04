@@ -29,7 +29,8 @@ export default function Main({navigation}) {
             longitudeDelta: 0.0134,
           });
 
-          alert(`Bem vindo ${'email'}!\n\nVocê está em: ${address}`);
+          //alert(`Bem vindo ${'email'}!\n\nVocê está em: ${address}`);
+          loadUser();
         },
         error => {
           // See error code charts below.
@@ -49,6 +50,7 @@ export default function Main({navigation}) {
     const realm = await getRealm();
 
     setUser(realm.objects('User')[0]);
+    console.warn(realm.objects('User'));
   }
 
   return (
