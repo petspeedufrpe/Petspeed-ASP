@@ -58,13 +58,13 @@ export default function Main({navigation}) {
           style={styles.map}
           showsUserLocation={true}
           region={region}
-          onMapReady={async () => {
+          onMapReady={ (async() => {
             await PermissionsAndroid.request(
               PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             );
             setLocationGaranted(true);
             SetRequestMapCameraChange(true);
-          }}
+          })}
         />
       </View>
       <BottomNavBar navigation={navigation} />

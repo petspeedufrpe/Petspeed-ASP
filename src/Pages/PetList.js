@@ -1,98 +1,85 @@
-import React from 'react'
-import { View, 
-         Text,
-         Image,
-         Alert,
-         StyleSheet,
-         TouchableOpacity,
-         } from 'react-native'
+import React,{useState,useEffect} from 'react';
+
+import { 
+  View, 
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  
+} from 'react-native';
+
+import api from '../services/api';
+import getRealm from '../services/realmConnection';
+import AnimalRegister from './AnimalRegister';
 
 export default function PetList({navigation}) {
+
+
+const [data,setData] = useState([]);
+
+useEffect(()=>{
+  async function loadAnimals() {
+    const realm = await getRealm();
+    const {id:idcliente} = realm.objects('User')[0];
+    const response =  await api.get(`/cliente/encontrarAnimalPorCliente/${idcliente}`);
+    setData(response.data);
+  }
+  loadAnimals();
+},[]);
+
   return (
-    <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            navigation.navigate('AnimalRegister');
-          }}>
-          <Text style={styles.buttonText}>Cadastrar Pet</Text>
-        </TouchableOpacity>
-    </View>
-    
-    
+    <>
+    <View style={{flex:3}}>
+      <FlatList 
+      style={styles.list}
+      data = {data}
+      keyExtractor={data => data.id.toString()}
+      renderItem={({item}) => (
+        <View style={styles.listItem}>
+          <Text style={styles.nome}>{item.nome}</Text>
+        </View>
+      )}
+      />
+      </View>
+      
+      <View >
+      <TouchableOpacity style={styles.fab}>
+        <Text>Botao aqui</Text>
+      </TouchableOpacity>
+      </View>
+      </>
   );
 }
 
+
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      paddingLeft: 20,
-      paddingRight: 20,
-      backgroundColor: '#00b894',
-    },
-    imageProfie: {
-      marginTop: 50,
-      height:120,
-      width: 120,
-    },
-    nomePerfil: {
-      color: 'white',
-      fontSize: 22,
-      marginTop: 12,
-    },
-    icon: {
-      marginTop: 12,
-    },
-  
-    button: {
-      alignSelf: 'stretch',
-      justifyContent: 'center',
-      height: 40,
-      marginTop: 3,
-      marginVertical: 25,
-      marginHorizontal: 20,
-      borderRadius: 10,
-      elevation: 2,
-      textShadowColor: '#000',
-      backgroundColor: '#009e80',
-      shadowOpacity: 0.05,
-      shadowRadius: 2,
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-    },
-  
-    buttonText: {
-      fontSize: 20,
-      fontFamily: 'Cochin',
-      textAlign: 'center',
-      color: '#FAFAF2',
-      fontStyle: 'italic',
-      alignContent: 'center',
-      fontWeight: 'bold',
-    },
-  
-    buttonSair: {
-      flex: 1,
-      width: 300,
-      marginHorizontal: 10,
-      alignSelf: 'stretch',
-      maxHeight: 50,
-      borderRadius: 10,
-      backgroundColor: '#009e80',
-      marginTop: 130,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginVertical: 5,
-      elevation: 2,
-      textShadowColor: '#000',
-      shadowOpacity: 0.05,
-      shadowRadius: 2,
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-    },
+  list: {
+    paddingHorizontal: 20,
+    backgroundColor:'#219382'
+  },
+  listItem: {
+    backgroundColor: '#EEE',
+    marginTop: 20,
+    padding: 30,
+    height:15,
+  },
+  container:{
+    marginTop:30,
+  },
+  fab:{
+       borderWidth:1,
+       borderColor:'rgba(0,0,0,0.2)',
+       alignItems:'center',
+       justifyContent:'center',
+       width:70,
+       position: 'absolute',                                          
+       bottom: 10,                                                    
+       right: 10,
+       height:70,
+       backgroundColor:'#fff',
+       borderRadius:100,
+     }
 });
+
+
