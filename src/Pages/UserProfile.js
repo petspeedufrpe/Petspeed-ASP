@@ -1,26 +1,28 @@
-import React from 'react'
-import { View, 
-         Text,
-         Image,
-         Alert,
-         StyleSheet,
-         TouchableOpacity,
-         } from 'react-native'
-
+import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 export default function UserProfile({navigation}) {
+  const user = navigation.state.params;
+  const {email} = user;
   return (
     <View style={styles.container}>
-       <Image style={styles.imageProfie}
-              source={require('../assets/profile.png')}
-              resizeMode="center"
-        />
-        <Text style={styles.nomePerfil}>
-          Nome Usuário
-        </Text>
-        <View>
-        <Image style={styles.icon}
-              //source={require('../assets/.png')}
+      <Image
+        style={styles.imageProfie}
+        source={require('../assets/profile.png')}
+        resizeMode="center"
+      />
+      <Text style={styles.nomePerfil}>{email}</Text>
+      <View>
+        <Image
+          style={styles.icon}
+          //source={require('../assets/.png')}
         />
         <TouchableOpacity
           style={styles.button}
@@ -39,14 +41,13 @@ export default function UserProfile({navigation}) {
         </TouchableOpacity>
 
         <TouchableOpacity
-                style={styles.buttonSair}
-                /*onPress={'funcaoDeSair'}*/>
-                <Text style={styles.buttonText}>Sair</Text>
+          style={styles.buttonSair}
+          /*onPress={'funcaoDeSair'}*/
+        >
+          <Text style={styles.buttonText}>Sair</Text>
         </TouchableOpacity>
-
-        </View>
+      </View>
     </View>
-    
   );
 }
 
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   },
   imageProfie: {
     marginTop: 50,
-    height:120,
+    height: 120,
     width: 120,
   },
   nomePerfil: {

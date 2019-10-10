@@ -3,16 +3,15 @@ import {PermissionsAndroid, View, StyleSheet, Text} from 'react-native';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
-import getRealm from '../services/realmConnection';
 import BottomNavBar from '../components/bottomNavBar';
 
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
 export default function Main({navigation}) {
+  const user = navigation.state.params;
   const [requestMapCameraChange, SetRequestMapCameraChange] = useState(false);
   const [locationGaranted, setLocationGaranted] = useState(false);
   const [region, setRegion] = useState(null);
-  const [user, setUser] = useState({});
 
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
@@ -21,6 +20,7 @@ export default function Main({navigation}) {
           const response = await Geocoder.from({latitude, longitude});
           const address = response.results[0].formatted_address;
           const location = address.substring(0, address.indexOf(','));
+          const {email} = user;
 
           setRegion({
             latitude: latitude,
@@ -29,8 +29,7 @@ export default function Main({navigation}) {
             longitudeDelta: 0.0134,
           });
 
-          //alert(`Bem vindo ${'email'}!\n\nVocê está em: ${address}`);
-          loadUser();
+          alert(`Bem vindo ${email}!\n\nVocê está em: ${address}`);
         },
         error => {
           // See error code charts below.
@@ -44,14 +43,7 @@ export default function Main({navigation}) {
       );
     }
     SetRequestMapCameraChange(false);
-  }, [locationGaranted, requestMapCameraChange]);
-
-  async function loadUser() {
-    const realm = await getRealm();
-
-    setUser(realm.objects('User')[0]);
-    console.warn(realm.objects('User'));
-  }
+  }, [locationGaranted, requestMapCameraChange, user]);
 
   return (
     <>
@@ -60,13 +52,13 @@ export default function Main({navigation}) {
           style={styles.map}
           showsUserLocation={true}
           region={region}
-          onMapReady={ (async() => {
+          onMapReady={async () => {
             await PermissionsAndroid.request(
               PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             );
             setLocationGaranted(true);
             SetRequestMapCameraChange(true);
-          })}
+          }}
         />
       </View>
       <BottomNavBar navigation={navigation} />
