@@ -41,20 +41,18 @@ export default function Login({navigation}) {
           token,
           email,
         };
-        console.warn(data);
         try {
           const realm = await getRealm();
           realm.write(() => {
             realm.create('User', data, true);
           });
-          console.warn(realm.objects('User'));
         } catch (e) {
           alert(e.message);
         }
-        navigation.navigate('Main', 'UserProfile');
+        navigation.navigate('Main', data);
       }
     } catch (error) {
-      return JSON.stringify(error.response.data.message); //gambiarra pra retornar a message de quando n looga
+      console.warn(error.message); //gambiarra pra retornar a message de quando n looga
     }
   }
 

@@ -21,15 +21,22 @@ export default function Register({navigation}) {
       .string()
       .label('Nome')
       .required('Favor preencher campo nome.'),
-    cpf: yup
+    localcrmv: yup
       .string()
+      .label('Localcrmv')
+      .required('Favor preencher campo região do CRMV.'),
+    cpf: yup
+      .number()
       .label('CPF')
       .required('Favor preencher campo cpf'),
     crmv: yup
-      .string()
+      .number()
       .label('CRMV')
       .required('Favor preencher campo CRMV'),
-
+    telefone: yup
+      .number()
+      .label('Telefone')
+      .required('Favor preencher campo telefone'),
     email: yup
       .string()
       .label('Email')
@@ -41,24 +48,23 @@ export default function Register({navigation}) {
       .required('Favor preencher o campo senha'),
   });
 
-  async function handleRegister(values) {
-    try {
-      const response = await api.post('/cliente/Register', values);
-      const {id} = response.data;
-      if (response.status === 200) {
-        navigation.navigate('Main', {data: {id}});
-      }
-    } catch (error) {
-      return JSON.stringify(error.response.data.message); //gambiarra pra retornar a message de quando n looga
-    }
-  }
-
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Formik
-        initialValues={{nome: '', cpf: '', crmv: '', email: '', senha: ''}}
+        initialValues={{
+          nome: '',
+          cpf: '',
+          crmv: '',
+          email: '',
+          senha: '',
+          localcrmv: '',
+          telefone: '',
+        }}
         onSubmit={(values, actions) => {
-          navigation.navigate('AddressForm', {values});
+          navigation.navigate('AddressForm', {
+            ...values,
+            fromVetRegister: true,
+          });
         }}
         validationSchema={validationSchema}>
         {props => (
@@ -85,6 +91,7 @@ export default function Register({navigation}) {
               style={styles.input}
               returnKeyType={'next'}
               onChangeText={props.handleChange('cpf')}
+              keyboardType="numeric"
               blurOnSubmit={false}
               onSubmitEditing={() => this.crmvRef.focus()} // chama o focus para o proximo
               onBlur={props.handleBlur('cpf')}
@@ -98,14 +105,44 @@ export default function Register({navigation}) {
               placeholder="Digite seu CRMV"
               style={styles.input}
               returnKeyType={'next'}
+              keyboardType="numeric"
               onChangeText={props.handleChange('crmv')}
               blurOnSubmit={false}
-              onSubmitEditing={() => this.emailRef.focus()} // chama o focus para o proximo
+              onSubmitEditing={() => this.localcrmvRef.focus()} // chama o focus para o proximo
               onBlur={props.handleBlur('crmv')}
               ref={ref => (this.crmvRef = ref)}
             />
             <Text style={{color: 'red'}}>
-              {props.touched.cpf && props.errors.cpf}
+              {props.touched.crmv && props.errors.crmv}
+            </Text>
+
+            <TextInput
+              placeholder="Informe o estado do seu CRMV"
+              style={styles.input}
+              returnKeyType={'next'}
+              onChangeText={props.handleChange('localcrmv')}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.telefoneRef.focus()} // chama o focus para o proximo
+              onBlur={props.handleBlur('localcrmv')}
+              ref={ref => (this.localcrmvRef = ref)}
+            />
+            <Text style={{color: 'red'}}>
+              {props.touched.localcrmv && props.errors.localcrmv}
+            </Text>
+
+            <TextInput
+              placeholder="Digite seu telefone"
+              style={styles.input}
+              returnKeyType={'next'}
+              keyboardType="numeric"
+              onChangeText={props.handleChange('telefone')}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.emailRef.focus()} // chama o focus para o proximo
+              onBlur={props.handleBlur('telefone')}
+              ref={ref => (this.telefoneRef = ref)}
+            />
+            <Text style={{color: 'red'}}>
+              {props.touched.telefone && props.errors.telefone}
             </Text>
 
             <TextInput
@@ -164,7 +201,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     fontSize: 16,
     backgroundColor: '#FAFAF2',
-    marginVertical: 10,
+    marginVertical: 3,
   },
   button: {
     alignSelf: 'stretch',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -19,6 +19,7 @@ import {Formik} from 'formik';
 import api from '../services/api.js';
 
 export default function AddressForm({navigation}) {
+  let {params} = navigation.state;
   const validationSchema = yup.object().shape({
     cidade: yup
       .string()
@@ -46,16 +47,47 @@ export default function AddressForm({navigation}) {
       .required('Favor preencher o campo complemento.'),
   });
 
-  async function handleAddress(values) {
+  async function handleVetRegister(values) {
+    const {nome, cpf, email, senha, crmv, telefone, localcrmv: uf} = params;
     try {
-      values = {...values, id: 16};
+      const usuario = await api.post('/usuario/cadastrarUsuario', {
+        email,
+        senha,
+      });
+      const {id: idusuario} = usuario.data;
+      if (usuario.status === 200) {
+        const pessoa = await api.post('/pessoa/cadastrarPessoa', {
+          nome,
+          cpf,
+          idusuario,
+        });
+        const {id: idpessoa} = pessoa.data;
+        if (pessoa.status === 200) {
+          params = {...params, idpessoa: idpessoa};
+          await api.post('/medico/criarmedico', {
+            idpessoa,
+            idusuario,
+            crmv,
+            uf,
+            telefone,
+          });
+        }
+      }
+    } catch (error) {
+      return JSON.stringify(error.response.data); //gambiarra pra retornar a message de quando n looga
+    }
+  }
+
+  async function handleAddress(values, idpessoa) {
+    console.warn(values, idpessoa);
+    try {
+      values = {...values, idpessoa};
       const response = await api.post('/pessoa/cadastrarEndereco', values);
-      console.warn(response);
       if (response.status === 200) {
         navigation.navigate('Main');
       }
     } catch (error) {
-      return JSON.stringify(error.response.data.message); //gambiarra pra retornar a message de quando n looga
+      console.warn(error.message); //gambiarra pra retornar a message de quando n looga
     }
   }
 
@@ -71,13 +103,17 @@ export default function AddressForm({navigation}) {
           cep: '',
         }}
         onSubmit={async (values, actions) => {
-          const resp = await handleAddress(values); //gambiarra para pegar o valor de quando nao loga
-          if (resp) {
-            ToastAndroid.show(resp, ToastAndroid.SHORT);
+          try {
+            if (params.fromVetRegister === true) {
+              await handleVetRegister(values);
+              await handleAddress(values, params.idpessoa);
+              navigation.navigate('Login');
+            } else {
+              await handleAddress(values, params.idpessoa);
+            }
+          } catch (error) {
+            console.warn(error.message);
           }
-          setTimeout(() => {
-            actions.setSubmitting(false);
-          }, 1000);
         }}
         validationSchema={validationSchema}>
         {props => (
