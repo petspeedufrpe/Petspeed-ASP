@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import api from '../services/api';
 import getRealm from '../services/realmConnection';
-import AnimalRegister from './AnimalRegister';
 
 export default function PetList({navigation}) {
   const [data, setData] = useState([]);
@@ -36,7 +35,12 @@ export default function PetList({navigation}) {
         />
       </View>
       <View>
-        <TouchableOpacity style={styles.fab}>
+        <TouchableOpacity
+          style={styles.fab}
+          onPress={navigation.navigate(
+            'AnimalRegister',
+            navigation.state.params,
+          )}>
           <Icon name={'plus'} size={22} />
         </TouchableOpacity>
       </View>
