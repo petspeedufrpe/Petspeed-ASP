@@ -4,17 +4,16 @@ import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import api from '../services/api';
-import getRealm from '../services/realmConnection';
 
 export default function PetList({navigation}) {
   const [data, setData] = useState([]);
+  const user = navigation.state.params;
 
   useEffect(() => {
     async function loadAnimals() {
-      const realm = await getRealm();
-      const {id: idcliente} = realm.objects('User')[0];
+      const {id} = user;
       const response = await api.get(
-        `/cliente/encontrarAnimalPorCliente/${idcliente}`,
+        `/cliente/encontrarAnimalPorCliente/${id}`,
       );
       setData(response.data);
     }
