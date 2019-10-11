@@ -11,11 +11,17 @@ export default function PetList({navigation}) {
 
   useEffect(() => {
     async function loadAnimals() {
-      const {id: idPessoa} = user;
-      const response = await api.get(
-        `/pessoa/encontrarAnimalPorPessoa/${idPessoa}`,
-      );
-      setData(response.data);
+      try {
+        console.warn(user);
+        const {id} = user;
+        const response = await api.get(
+          `/cliente/encontrarAnimalPorCliente/${id}`,
+        );
+        console.warn(response);
+        setData(response.data);
+      } catch (error) {
+        console.warn(error.message);
+      }
     }
     loadAnimals();
   }, []);
@@ -29,6 +35,8 @@ export default function PetList({navigation}) {
           renderItem={({item}) => (
             <View style={styles.listItem}>
               <Text style={styles.nome}>{item.nome}</Text>
+              <Text style={styles.nome}>{item.raca}</Text>
+              <Text style={styles.nome}>{item.peso}</Text>
             </View>
           )}
         />
@@ -36,10 +44,9 @@ export default function PetList({navigation}) {
       <View>
         <TouchableOpacity
           style={styles.fab}
-          onPress={navigation.navigate(
-            'AnimalRegister',
-            navigation.state.params,
-          )}>
+          onPress={() => {
+            navigation.navigate('AnimalRegister', navigation.state.params);
+          }}>
           <Icon name={'plus'} size={22} />
         </TouchableOpacity>
       </View>
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEE',
     marginTop: 20,
     padding: 30,
-    height: 15,
+    minHeight: 30,
   },
   container: {
     marginTop: 30,
