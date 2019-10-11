@@ -12,12 +12,10 @@ export default function PetList({navigation}) {
   useEffect(() => {
     async function loadAnimals() {
       try {
-        console.warn(user);
         const {id} = user;
         const response = await api.get(
           `/cliente/encontrarAnimalPorCliente/${id}`,
         );
-        console.warn(response);
         setData(response.data);
       } catch (error) {
         console.warn(error.message);

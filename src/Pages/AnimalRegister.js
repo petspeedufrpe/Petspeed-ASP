@@ -27,9 +27,8 @@ export default function AnimalRegister({navigation}) {
       .required('Favor preencher campo idade'),
 
     peso: yup
-      .string()
+      .number()
       .label('Peso')
-      .email('Favor digitar um email válido.')
       .required('Favor preencher o campo peso.'),
     raca: yup
       .string()
@@ -40,10 +39,7 @@ export default function AnimalRegister({navigation}) {
   async function handleRegister(values) {
     try {
       const response = api.post('/animal/cadastrarAnimal', values);
-      if (response.status === 200) {
-        const res = response.data;
-        return 'Animal Cadastrado!';
-      }
+      navigation.navigate('Petlist');
     } catch (e) {
       console.log(e.message);
     }
@@ -54,9 +50,9 @@ export default function AnimalRegister({navigation}) {
         initialValues={{
           nome: '',
           peso: '',
-          idade: '',
+          nascimento: '',
           raca: '',
-          idPessoa: navigation.state.params,
+          idPessoa: navigation.state.params.id,
         }}
         onSubmit={async (values, actions) => {
           const resp = await handleRegister(values); //gambiarra para pegar o valor de quando nao loga
@@ -93,6 +89,7 @@ export default function AnimalRegister({navigation}) {
               returnKeyType={'next'}
               onChangeText={props.handleChange('peso')}
               blurOnSubmit={false}
+              keyboardType="numeric"
               onSubmitEditing={() => this.idadeRef.focus()} // chama o focus para o proximo
               onBlur={props.handleBlur('peso')}
               ref={ref => (this.pesoRef = ref)}
@@ -112,14 +109,14 @@ export default function AnimalRegister({navigation}) {
               ref={ref => (this.idadeRef = ref)}
             />
             <Text style={{color: 'red'}}>
-              {props.touched.idade && props.errors.idade}
+              {props.touched.nascimento && props.errors.nascimento}
             </Text>
             <TextInput
               style={styles.input}
               onChangeText={props.handleChange('raca')}
               onBlur={props.handleBlur('raca')}
               placeholder="Digite a raça do seu pet"
-              secureTextEntry={true}
+              secureTextEntry={false}
               ref={ref => (this.racaRef = ref)} //cria uma referencia desse input
             />
             <Text style={{color: 'red'}}>
