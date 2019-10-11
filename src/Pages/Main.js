@@ -17,20 +17,24 @@ export default function Main({navigation}) {
 
   useEffect(() => {
     async function loadMedics() {
-      const medics = await api.get('/all');
-      console.log(medics);
-      if (medics.length > 0) {
-        medics.map(medico => {
+      try {
+        const rawquery = await api.get('medico/all');
+        const medics = rawquery.data;
+        for (var i = 0; i < medics.length; i++) {
+          const medico = medics[i];
           let marker = {
             latitude: medico.pessoa.endereco.latitude,
             longitude: medico.pessoa.endereco.longitude,
             title: medico.pessoa.nome,
             description: medico.telefone,
           };
-          markers.push(marker);
-        });
+          setMarkers(markers => [...markers, marker]);
+        }
+      } catch (error) {
+        console.warn(error.message);
       }
     }
+
     loadMedics();
   }, []);
 
@@ -82,9 +86,10 @@ export default function Main({navigation}) {
           }}>
           {markers.map(marker => (
             <Marker
-              coordinate={
-                ({latitude: marker.latitude}, {longitude: marker.longitude})
-              }
+              coordinate={{
+                latitude: marker.latitude,
+                longitude: marker.longitude,
+              }}
               title={marker.title}
               description={marker.description}
             />

@@ -8,10 +8,12 @@ import UserRegister from './Pages/UserRegister';
 import VetRegister from './Pages/VetRegister';
 import UserProfile from './Pages/UserProfile';
 import PetList from './Pages/PetList';
+import VetMain from './Pages/VetMain';
 import AnimalRegister from './Pages/AnimalRegister';
 const MainNavigator = createStackNavigator(
   {
     Login,
+    VetMain,
     Main,
     AnimalRegister,
     VetRegister,

@@ -34,7 +34,7 @@ export default function Login({navigation}) {
       const response = await api.post('/usuario/login', values);
       if (response.status === 200) {
         const res = response.data;
-        const {id, email} = res.user;
+        const {id, email, account} = res.user;
         const {token} = res;
         const data = {
           id,
@@ -49,7 +49,11 @@ export default function Login({navigation}) {
         } catch (e) {
           alert(e.message);
         }
-        navigation.navigate('Main', data);
+        if (account === 'cliente') {
+          navigation.navigate('Main', data);
+        } else if (account === 'medico') {
+          navigation.navigate('VetMain', data);
+        }
       }
     } catch (error) {
       console.warn(error.message); //gambiarra pra retornar a message de quando n looga
@@ -121,7 +125,10 @@ export default function Login({navigation}) {
               <Text style={styles.alternativeMessage}>
                 ___________________OU___________________
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('VetMain');
+                }}>
                 <Text style={styles.lostPasswordMessage}>
                   Esqueci Minha Senha.
                 </Text>
