@@ -22,7 +22,7 @@ export default function PetList({navigation}) {
       }
     }
     loadAnimals();
-  }, []);
+  }, [data]);
   return (
     <>
       <View style={{flex: 3}}>
@@ -32,9 +32,9 @@ export default function PetList({navigation}) {
           keyExtractor={data => data.id.toString()}
           renderItem={({item}) => (
             <View style={styles.listItem}>
-              <Text style={styles.nome}>{item.nome}</Text>
-              <Text style={styles.nome}>{item.raca}</Text>
-              <Text style={styles.nome}>{item.peso}</Text>
+              <Text style={styles.nome}>{`Nome: ${item.nome}`}</Text>
+              <Text style={styles.nome}>{`Raça: ${item.raca}`}</Text>
+              <Text style={styles.nome}>{`Peso: ${item.peso}kg`}</Text>
             </View>
           )}
         />
