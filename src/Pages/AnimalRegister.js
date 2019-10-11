@@ -56,7 +56,7 @@ export default function AnimalRegister({navigation}) {
           peso: '',
           idade: '',
           raca: '',
-          id: navigation.state.params,
+          idPessoa: navigation.state.params,
         }}
         onSubmit={async (values, actions) => {
           const resp = await handleRegister(values); //gambiarra para pegar o valor de quando nao loga
