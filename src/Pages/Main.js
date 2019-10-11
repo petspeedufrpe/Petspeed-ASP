@@ -22,7 +22,6 @@ export default function Main({navigation}) {
         const medics = rawquery.data;
         for (var i = 0; i < medics.length; i++) {
           const medico = medics[i];
-          console.warn(medico);
           let marker = {
             latitude: medico.pessoa.endereco.latitude,
             longitude: medico.pessoa.endereco.longitude,
@@ -37,7 +36,6 @@ export default function Main({navigation}) {
     }
 
     loadMedics();
-    console.log(markers);
   }, []);
 
   useEffect(() => {
