@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  KeyboardAvoidingView,
   ActivityIndicator,
   ToastAndroid,
   Image,
@@ -15,7 +14,6 @@ import * as yup from 'yup';
 import {Formik} from 'formik';
 
 import api from '../services/api.js';
-import { whileStatement } from '@babel/types';
 
 export default function AnimalRegister({navigation}) {
   const validationSchema = yup.object().shape({
@@ -39,54 +37,27 @@ export default function AnimalRegister({navigation}) {
       .required('Favor preencher o campo raça'),
   });
 
-
-  /*     
-    ####################################################
-  
-    Verificar se o usuário tá logado
-    recolher id do usuário
-    passar o id na const do animal 
-    cadastrar no banco
-     
-    ####################################################
-
-    
-          
-
-    async function handleRegister(values) {
-    const {nome, peso, idade, raca} = values;
+  async function handleRegister(values) {
     try {
-      const usuario = await api.post('/usuario/cadastrarUsuario', {
-        email,
-        senha,
-      });
-      const {id: idusuario} = usuario.data;
-      if (usuario.status === 200) {
-        const pessoa = await api.post('/pessoa/cadastrarPessoa', {
-          nome,
-          cpf,
-          idusuario,
-        });
-        const {id: idpessoa} = pessoa.data;
-        if (pessoa.status === 200) {
-          const cliente = await api.post('/cliente/cadastrarCliente', {
-            idpessoa,
-            idusuario,
-          });
-          if (cliente.status === 200) {
-            navigation.navigate('Login');
-          }
-        }
+      const response = api.post('/animal/cadastrarAnimal', values);
+      if (response.status === 200) {
+        const res = response.data;
+        return 'Animal Cadastrado!';
       }
-    } catch (error) {
-      return JSON.stringify(error.response.data); //gambiarra pra retornar a message de quando n looga
+    } catch (e) {
+      console.log(e.message);
     }
   }
- */
   return (
     <View style={styles.container}>
       <Formik
-        initialValues={{nome: '', peso: '', idade: '', raca: ''}}
+        initialValues={{
+          nome: '',
+          peso: '',
+          idade: '',
+          raca: '',
+          id: navigation.state.params,
+        }}
         onSubmit={async (values, actions) => {
           const resp = await handleRegister(values); //gambiarra para pegar o valor de quando nao loga
           if (resp) {
@@ -210,11 +181,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   textTitle: {
-      fontSize: 35,
-      color: "white",
-      padding: 10,
-      fontFamily: "helvica",
-
+    fontSize: 35,
+    color: 'white',
+    padding: 10,
+    fontFamily: 'helvica',
   },
   passordRecoverContainer: {
     flex: 1,

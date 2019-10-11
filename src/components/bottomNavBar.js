@@ -11,7 +11,7 @@ export default function BottomNavBar({navigation}) {
       <TouchableOpacity
         style={styles.tabButton}
         onPress={() => {
-          navigation.navigate('PetList');
+          navigation.navigate('PetList', navigation.state.params);
         }}>
         <Icon name="paw" size={22} />
       </TouchableOpacity>

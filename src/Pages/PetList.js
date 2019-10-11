@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import api from '../services/api';
 import getRealm from '../services/realmConnection';
@@ -36,7 +37,7 @@ export default function PetList({navigation}) {
       </View>
       <View>
         <TouchableOpacity style={styles.fab}>
-          <Text>Botao aqui</Text>
+          <Icon name={'plus'} size={22} />
         </TouchableOpacity>
       </View>
     </>
@@ -46,7 +47,7 @@ export default function PetList({navigation}) {
 const styles = StyleSheet.create({
   list: {
     paddingHorizontal: 20,
-    backgroundColor: '#219382',
+    backgroundColor: '#00b894',
   },
   listItem: {
     backgroundColor: '#EEE',

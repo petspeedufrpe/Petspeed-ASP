@@ -13,12 +13,12 @@ export default function Main({navigation}) {
   const [requestMapCameraChange, SetRequestMapCameraChange] = useState(false);
   const [locationGaranted, setLocationGaranted] = useState(false);
   const [region, setRegion] = useState(null);
-  const [user, setUser] = useState({});
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     async function loadMedics() {
       const medics = await api.get('/all');
+      console.log(medics);
       if (medics.length > 0) {
         medics.map(medico => {
           let marker = {
@@ -32,7 +32,7 @@ export default function Main({navigation}) {
       }
     }
     loadMedics();
-  }, [markers]);
+  }, []);
 
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
