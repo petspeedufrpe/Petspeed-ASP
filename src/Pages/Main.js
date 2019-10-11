@@ -13,26 +13,32 @@ export default function Main({navigation}) {
   const [requestMapCameraChange, SetRequestMapCameraChange] = useState(false);
   const [locationGaranted, setLocationGaranted] = useState(false);
   const [region, setRegion] = useState(null);
-  const [user, setUser] = useState({});
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     async function loadMedics() {
-      const medics = await api.get('/all');
-      if (medics.length > 0) {
-        medics.map(medico => {
+      try {
+        const rawquery = await api.get('medico/all');
+        const medics = rawquery.data;
+        for (var i = 0; i < medics.length; i++) {
+          const medico = medics[i];
+          console.warn(medico);
           let marker = {
             latitude: medico.pessoa.endereco.latitude,
             longitude: medico.pessoa.endereco.longitude,
             title: medico.pessoa.nome,
             description: medico.telefone,
           };
-          markers.push(marker);
-        });
+          setMarkers(markers => [...markers, marker]);
+        }
+      } catch (error) {
+        console.warn(error.message);
       }
     }
+
     loadMedics();
-  }, [markers]);
+    console.log(markers);
+  }, []);
 
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
@@ -82,9 +88,10 @@ export default function Main({navigation}) {
           }}>
           {markers.map(marker => (
             <Marker
-              coordinate={
-                ({latitude: marker.latitude}, {longitude: marker.longitude})
-              }
+              coordinate={{
+                latitude: marker.latitude,
+                longitude: marker.longitude,
+              }}
               title={marker.title}
               description={marker.description}
             />
