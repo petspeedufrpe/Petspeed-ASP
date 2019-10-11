@@ -11,9 +11,9 @@ export default function PetList({navigation}) {
 
   useEffect(() => {
     async function loadAnimals() {
-      const {id} = user;
+      const {id: idPessoa} = user;
       const response = await api.get(
-        `/cliente/encontrarAnimalPorCliente/${id}`,
+        `/pessoa/encontrarAnimalPorPessoa/${idPessoa}`,
       );
       setData(response.data);
     }
