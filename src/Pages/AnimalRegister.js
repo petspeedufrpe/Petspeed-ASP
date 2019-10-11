@@ -38,8 +38,7 @@ export default function AnimalRegister({navigation}) {
 
   async function handleRegister(values) {
     try {
-      const response = api.post('/animal/cadastrarAnimal', values);
-      navigation.navigate('Petlist');
+      const response = await api.post('/animal/cadastrarAnimal', values);
     } catch (e) {
       console.log(e.message);
     }
@@ -58,6 +57,7 @@ export default function AnimalRegister({navigation}) {
           const resp = await handleRegister(values); //gambiarra para pegar o valor de quando nao loga
           if (resp) {
             ToastAndroid.show(resp, ToastAndroid.SHORT);
+            navigation.navigate('Petlist');
           }
           setTimeout(() => {
             actions.setSubmitting(false);
