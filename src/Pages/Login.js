@@ -45,7 +45,7 @@ export default function Login({navigation}) {
         try {
           const realm = await getRealm();
           realm.write(() => {
-            realm.create('User', data,true);
+            realm.create('User', data, true);
           });
           console.warn(realm.objects('User'));
         } catch (e) {

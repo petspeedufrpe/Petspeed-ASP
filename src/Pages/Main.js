@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {PermissionsAndroid, View, StyleSheet, Text} from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
 import getRealm from '../services/realmConnection';
 import BottomNavBar from '../components/bottomNavBar';
+import api from '../services/api';
 
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
@@ -13,6 +14,25 @@ export default function Main({navigation}) {
   const [locationGaranted, setLocationGaranted] = useState(false);
   const [region, setRegion] = useState(null);
   const [user, setUser] = useState({});
+  const [markers, setMarkers] = useState([]);
+
+  useEffect(() => {
+    async function loadMedics() {
+      const medics = await api.get('/all');
+      if (medics.length > 0) {
+        medics.map(medico => {
+          let marker = {
+            latitude: medico.pessoa.endereco.latitude,
+            longitude: medico.pessoa.endereco.longitude,
+            title: medico.pessoa.nome,
+            description: medico.telefone,
+          };
+          markers.push(marker);
+        });
+      }
+    }
+    loadMedics();
+  }, [markers]);
 
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
@@ -60,14 +80,23 @@ export default function Main({navigation}) {
           style={styles.map}
           showsUserLocation={true}
           region={region}
-          onMapReady={ (async() => {
+          onMapReady={async () => {
             await PermissionsAndroid.request(
               PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             );
             setLocationGaranted(true);
             SetRequestMapCameraChange(true);
-          })}
-        />
+          }}>
+          {markers.map(marker => (
+            <Marker
+              coordinate={
+                ({latitude: marker.latitude}, {longitude: marker.longitude})
+              }
+              title={marker.title}
+              description={marker.description}
+            />
+          ))}
+        </MapView>
       </View>
       <BottomNavBar navigation={navigation} />
     </>
