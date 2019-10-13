@@ -10,9 +10,11 @@ import UserProfile from './Pages/UserProfile';
 import PetList from './Pages/PetList';
 import VetMain from './Pages/VetMain';
 import AnimalRegister from './Pages/AnimalRegister';
+import AddressPicker from './Pages/AddressPicker';
 const MainNavigator = createStackNavigator(
   {
     Login,
+    AddressPicker,
     VetMain,
     Main,
     AnimalRegister,

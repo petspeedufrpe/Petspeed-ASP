@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {PermissionsAndroid, View, StyleSheet, Text} from 'react-native';
+import {PermissionsAndroid, View, StyleSheet} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
 import BottomNavBar from '../components/bottomNavBar';
 import api from '../services/api';
+import Search from '../components/SearchBar';
 
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
@@ -95,6 +96,7 @@ export default function Main({navigation}) {
             />
           ))}
         </MapView>
+        <Search />
       </View>
       <BottomNavBar navigation={navigation} />
     </>
