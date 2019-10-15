@@ -81,6 +81,7 @@ export default function Main({navigation}) {
 
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
+      reactotron.log('rodou geocode');
       Geolocation.getCurrentPosition(
         async ({coords: {latitude, longitude}}) => {
           const response = await Geocoder.from({latitude, longitude});
@@ -105,7 +106,7 @@ export default function Main({navigation}) {
       );
     }
     SetRequestMapCameraChange(false);
-  }, [locationGaranted, requestMapCameraChange, user]);
+  }, [locationGaranted, requestMapCameraChange]);
 
   return (
     <>

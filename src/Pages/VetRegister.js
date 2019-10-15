@@ -60,6 +60,7 @@ export default function Register({navigation}) {
             telefone: '',
           }}
           onSubmit={(values, actions) => {
+            values.email = values.email.toLowerCase();
             navigation.navigate('AddressPicker', {
               ...values,
               fromVetRegister: true,
@@ -148,6 +149,7 @@ export default function Register({navigation}) {
                 placeholder="Digite seu e-mail"
                 style={styles.input}
                 returnKeyType={'next'}
+                autoCapitalize="none"
                 onChangeText={props.handleChange('email')}
                 blurOnSubmit={false}
                 onSubmitEditing={() => this.passwordRef.focus()} // chama o focus para o proximo

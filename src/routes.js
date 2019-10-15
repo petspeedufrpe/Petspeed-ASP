@@ -11,9 +11,11 @@ import PetList from './Pages/PetList';
 import VetMain from './Pages/VetMain';
 import AnimalRegister from './Pages/AnimalRegister';
 import AddressPicker from './Pages/AddressPicker';
+import VetOrderCard from './components/VetOrderCard';
 const MainNavigator = createStackNavigator(
   {
     Login,
+    VetOrderCard,
     AddressPicker,
     VetMain,
     Main,

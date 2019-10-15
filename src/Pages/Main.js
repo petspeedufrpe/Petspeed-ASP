@@ -96,7 +96,6 @@ export default function Main({navigation}) {
             />
           ))}
         </MapView>
-        <Search />
       </View>
       <BottomNavBar navigation={navigation} />
     </>
