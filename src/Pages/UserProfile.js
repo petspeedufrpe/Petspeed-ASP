@@ -27,7 +27,7 @@ export default function UserProfile({navigation}) {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            navigation.navigate('');
+            navigation.navigate('UserProfileEdit');
           }}>
           <Text style={styles.buttonText}>Editar Dados</Text>
         </TouchableOpacity>
