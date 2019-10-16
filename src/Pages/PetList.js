@@ -9,6 +9,7 @@ export default function PetList({navigation}) {
   const [data, setData] = useState([]);
   const user = navigation.state.params;
 
+
   useEffect(() => {
     async function loadAnimals() {
       try {
@@ -31,11 +32,13 @@ export default function PetList({navigation}) {
           data={data}
           keyExtractor={data => data.id.toString()}
           renderItem={({item}) => (
+            <TouchableOpacity onPress={navigation.navigate('AnimalDetails',item)}>
             <View style={styles.listItem}>
               <Text style={styles.nome}>{`Nome: ${item.nome}`}</Text>
               <Text style={styles.nome}>{`Raça: ${item.raca}`}</Text>
               <Text style={styles.nome}>{`Peso: ${item.peso}kg`}</Text>
             </View>
+            </TouchableOpacity>
           )}
         />
       </View>
