@@ -12,6 +12,7 @@ import VetMain from './Pages/VetMain';
 import AnimalRegister from './Pages/AnimalRegister';
 import AddressPicker from './Pages/AddressPicker';
 import VetOrderCard from './components/VetOrderCard';
+import UserProfileEdit from './Pages/UserProfileEdit'
 const MainNavigator = createStackNavigator(
   {
     Login,
@@ -26,6 +27,7 @@ const MainNavigator = createStackNavigator(
     AddressForm,
     RegistrationType,
     PetList,
+    UserProfileEdit
   },
   {
     headerMode: 'none',

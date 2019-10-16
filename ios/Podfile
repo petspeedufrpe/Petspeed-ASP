@@ -29,6 +29,8 @@ target 'petspeed_user_app' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
   target 'petspeed_user_appTests' do
     inherit! :search_paths
     # Pods for testing

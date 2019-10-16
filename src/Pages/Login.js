@@ -127,11 +127,13 @@ export default function Login({navigation}) {
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  //navigation.navigate('VetMain');
+                  //
+                  
+                  navigation.navigate('UserProfileEdit');
                 }}>
                 <Text
                   onPress={() => {
-                    navigation.navigate('VetOrderCard');
+                    navigation.navigate('UserProfileEdit');
                   }}
                   style={styles.lostPasswordMessage}>
                   Esqueci Minha Senha.
