@@ -129,7 +129,11 @@ export default function Login({navigation}) {
                 onPress={() => {
                   //navigation.navigate('VetMain');
                 }}>
-                <Text style={styles.lostPasswordMessage}>
+                <Text
+                  onPress={() => {
+                    navigation.navigate('VetOrderCard');
+                  }}
+                  style={styles.lostPasswordMessage}>
                   Esqueci Minha Senha.
                 </Text>
               </TouchableOpacity>
