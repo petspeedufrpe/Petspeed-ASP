@@ -17,10 +17,9 @@ import reactotron from 'reactotron-react-native';
 
 export default function Main({navigation}){
     const user = navigation.state.params;
-    const user = {...user, nome: 'Test Name'}
     //const user = {pessoa:{id:1,name:'Caio',email:'teste@teste.com'}}
-    const [nome, onChangeText] = useState(user.pessoa.name);
-    const [email, setEmail] = useState(user.pessoa.email);
+    const [nome, onChangeText] = useState(user.nome);
+    const [email, setEmail] = useState(user.email);
     const [photo, setPhoto] = useState(null);
     const data = new FormData();
 
@@ -58,7 +57,7 @@ export default function Main({navigation}){
             body: data,
            };
            reactotron.log(config.body);
-        const response = await api.post(`/pessoa/editarpessoa/${user.pessoa.id}`,config
+        const response = await api.post(`/pessoa/editarpessoa/${user.id}`,config
         );
     }
     else{
@@ -92,7 +91,7 @@ export default function Main({navigation}){
             <Text style={styles.input}>Nome</Text>
             <TextInput
                 placeholder= 'Não Pode Ficar em Branco'
-                defaultValue={user.pessoa.name}
+                defaultValue={user.nome}
                 onChangeText={text => onChangeText(text)}
                 style={styles.textInput}
                 underlineColorAndroid={'#fff'}>
@@ -101,7 +100,7 @@ export default function Main({navigation}){
             <Text style={styles.input}>Email</Text>
             <TextInput
                 placeholder= 'Não Pode Ficar em Branco'
-                defaultValue={user.pessoa.email}
+                defaultValue={user.email}
                 onChangeText={email => setEmail(email)}
                 style={styles.textInput}
                 underlineColorAndroid={'#fff'}>
