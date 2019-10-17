@@ -16,7 +16,7 @@ export default function PetList({navigation}) {
       try {
         const {id} = user;
         const response = await api.get(
-          `/cliente/${id}`,
+          `animal/cliente/${id}`,
         );
         setData(response.data);
       } catch (error) {
@@ -27,8 +27,9 @@ export default function PetList({navigation}) {
   }, [data]);
   const ListEmptyComponent = ()=>{
     return(
-      <View style={styles.listItem}> <Text style={styles.empty}>Você Não Possui nenhum animal</Text></View>
-    )
+      <View style={{flex:1,alignContent:'center',alignItems:'center',alignSelf:'center'}}>
+    <Text style={styles.empty}>Você não possui nenhum animal cadastrado. </Text>
+    </View>)
   }
   return (
     <>
@@ -64,7 +65,7 @@ export default function PetList({navigation}) {
 
 const styles = StyleSheet.create({
   list: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     backgroundColor: '#00b894',
   },
   listItem: {
@@ -90,6 +91,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   empty:{
+    margin:20,
+    justifyContent:'center',
     fontSize:35,
     fontWeight:'bold',
     color:'#fff',

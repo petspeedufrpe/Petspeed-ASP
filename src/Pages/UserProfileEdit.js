@@ -9,6 +9,7 @@ import{
     StyleSheet
 } from 'react-native';
 
+import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
 import api from '../services/api.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -21,7 +22,7 @@ export default function Main({navigation}){
     //const user = {pessoa:{id:1,name:'Caio',email:'teste@teste.com'}}
     const [nome, onChangeText] = useState(user!== undefined ? user.nome : "");
     const [email, setEmail] = useState(user !== undefined ? user.email: "");
-    const [photo, setPhoto] = useState(null);
+    const [photo, setPhoto] = useState(AsyncStorage.getItem('foto')!== undefined ? AsyncStorage.getItem('foto') : null);
     const data = new FormData();
 
     const validate = ()=>{
@@ -36,6 +37,7 @@ export default function Main({navigation}){
         };
         ImagePicker.launchImageLibrary(options, response => {
             if(response.uri){
+                AsyncStorage.setItem('foto',response);
                 setPhoto(response);
             }
         })
@@ -44,10 +46,8 @@ export default function Main({navigation}){
         if(validate()){
         data.append('name',nome);
         data.append('email',email);
-        data.append('fileData',{
-            uri: photo.uri,
-            type: photo.type,
-            fileName: photo.fileName
+        data.append('file',{
+            photo
         });
         const config = {
             method: 'POST',
@@ -78,7 +78,7 @@ export default function Main({navigation}){
             <TouchableOpacity style={{marginTop:25, alignSelf:'flex-start'}}
                 onPress={handleUpload}>
                     {photo && (
-                        <ImageBackground  borderRadius={100} source={{uri:photo.uri}} style={styles.image}>
+                        <ImageBackground  borderRadius={100} source={photo.uri!== undefined ? {uri:photo.uri}:AsyncStorage.getItem('foto')}  style={styles.image}>
                             <Icon name={'plus'} size={25} style={{alignSelf:'center',paddingVertical:25}}></Icon>
                         </ImageBackground>
                     )}
