@@ -10,7 +10,7 @@ import {
 
 export default function UserProfile({navigation}) {
   const user = navigation.state.params;
-  const {email} = user;
+  const {nome} = user;
   return (
     <View style={styles.container}>
       <Image
@@ -18,7 +18,7 @@ export default function UserProfile({navigation}) {
         source={require('../assets/profile.png')}
         resizeMode="center"
       />
-      <Text style={styles.nomePerfil}>{email}</Text>
+      <Text style={styles.nomePerfil}>{nome}</Text>
       <View>
         <Image
           style={styles.icon}
