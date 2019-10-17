@@ -19,39 +19,24 @@ export default function({navigation}){
     const [flag,setFlag] = useState(false);
     const [data,setData] = useState({});
 
-    const validate = () => {
-        if(
-            oldPasswd !== ''
-            && 
-            newPasswd !== ''
-            &&
-            confPass !== ''){
-                if(newPasswd === confPass){
-                    setFlag(true);
-                    setData({oldPasswd,newPasswd,confPass})
-                }
-                else{ 
-                    setFlag(false);
-                 }
-            }
-        else{
-            setFlag(false);
-    }};
-
-    const handleSubmit = async()=> {
-        validate();
-        reactotron.log(flag)
-           if(flag){
+    const handleSubmit = async ()=>{
+        if(oldPasswd === '' || newPasswd === '' || confPass === ''){
+            reactotron.log(data,'aqui')
+            setData({})
+            return false;
+        }
+        else if(newPasswd === confPass){
+            const teste = await setData({oldPasswd,newPasswd});
             try{
-                const response = await api.post('/usuario/editSenha/',data);
-                reactotron.log(response);
+                reactotron.log(data);
+                const response = await api.post('/usuario/alterarSenha',data);
+                
             }
             catch(e){
                 reactotron.log(e);
             }
         }
     }
-
     return(
         <View style={styles.container}>
             <Text style={styles.text}>Senha antiga</Text>

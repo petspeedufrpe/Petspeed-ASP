@@ -6,11 +6,13 @@ import Geolocation from 'react-native-geolocation-service';
 import BottomNavBar from '../components/bottomNavBar';
 import api from '../services/api';
 import Search from '../components/SearchBar';
+import reactotron from 'reactotron-react-native';
 
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
 export default function Main({navigation}) {
   const user = navigation.state.params;
+  reactotron.log(user);
   const [requestMapCameraChange, SetRequestMapCameraChange] = useState(false);
   const [locationGaranted, setLocationGaranted] = useState(false);
   const [region, setRegion] = useState(null);

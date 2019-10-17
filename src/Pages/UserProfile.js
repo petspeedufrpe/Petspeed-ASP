@@ -7,9 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import reactotron from 'reactotron-react-native';
 
 export default function UserProfile({navigation}) {
   const user = navigation.state.params;
+  reactotron.log(user);
   const {nome} = user;
   return (
     <View style={styles.container}>
@@ -27,7 +29,7 @@ export default function UserProfile({navigation}) {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            navigation.navigate('UserProfileEdit');
+            navigation.navigate('UserProfileEdit',user);
           }}>
           <Text style={styles.buttonText}>Editar Dados</Text>
         </TouchableOpacity>

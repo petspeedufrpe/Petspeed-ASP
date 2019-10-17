@@ -15,6 +15,7 @@ import {Formik} from 'formik';
 
 import api from '../services/api.js';
 import getRealm from '../services/realmConnection.js';
+import reactotron from 'reactotron-react-native';
 
 export default function Login({navigation}) {
   const validationSchema = yup.object().shape({
@@ -31,15 +32,17 @@ export default function Login({navigation}) {
 
   async function handleLogin(values) {
     try {
+      reactotron.log(values);
       const response = await api.post('/usuario/login', values);
       if (response.status === 200) {
         const res = response.data;
-        const {id, email, account} = res.user;
+        const {id, email, account,nome} = res.user;
         const {token} = res;
         const data = {
           id,
           token,
           email,
+          nome,
         };
         try {
           const realm = await getRealm();

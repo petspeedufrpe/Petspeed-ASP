@@ -4,6 +4,7 @@ import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import api from '../services/api';
+import reactotron from 'reactotron-react-native';
 
 export default function PetList({navigation}) {
   const [data, setData] = useState([]);
@@ -24,14 +25,20 @@ export default function PetList({navigation}) {
     }
     loadAnimals();
   }, [data]);
+  const ListEmptyComponent = ()=>{
+    return(
+      <View style={styles.listItem}> <Text style={styles.empty}>Você Não Possui nenhum animal</Text></View>
+    )
+  }
   return (
     <>
       <View style={{flex: 3}}>
         <FlatList
+        ListEmptyComponent={ListEmptyComponent}
           style={styles.list}
           data={data}
           keyExtractor={data => data.id.toString()}
-          renderItem={({item}) => (
+          renderItem={ ({item}) => (
             <TouchableOpacity onPress={navigation.navigate('AnimalDetails',item)}>
             <View style={styles.listItem}>
               <Text style={styles.nome}>{`Nome: ${item.nome}`}</Text>
@@ -82,4 +89,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 100,
   },
+  empty:{
+    fontSize:35,
+    fontWeight:'bold',
+    color:'#fff',
+  }
 });

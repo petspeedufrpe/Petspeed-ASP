@@ -17,9 +17,10 @@ import reactotron from 'reactotron-react-native';
 
 export default function Main({navigation}){
     const user = navigation.state.params;
+    reactotron.log(user);
     //const user = {pessoa:{id:1,name:'Caio',email:'teste@teste.com'}}
-    const [nome, onChangeText] = useState(user.nome);
-    const [email, setEmail] = useState(user.email);
+    const [nome, onChangeText] = useState(user!== undefined ? user.nome : "");
+    const [email, setEmail] = useState(user !== undefined ? user.email: "");
     const [photo, setPhoto] = useState(null);
     const data = new FormData();
 
@@ -57,8 +58,7 @@ export default function Main({navigation}){
             body: data,
            };
            reactotron.log(config.body);
-        const response = await api.post(`/pessoa/editarpessoa/${user.id}`,config
-        );
+        const response = await api.post(`/pessoa/editarpessoa/${user.id}`,config);
     }
     else{
         reactotron.log('toaq')
@@ -78,7 +78,7 @@ export default function Main({navigation}){
             <TouchableOpacity style={{marginTop:25, alignSelf:'flex-start'}}
                 onPress={handleUpload}>
                     {photo && (
-                        <ImageBackground resizeMode='cover' borderRadius={100} source={{uri:photo.uri}} style={styles.image}>
+                        <ImageBackground  borderRadius={100} source={{uri:photo.uri}} style={styles.image}>
                             <Icon name={'plus'} size={25} style={{alignSelf:'center',paddingVertical:25}}></Icon>
                         </ImageBackground>
                     )}
@@ -91,7 +91,7 @@ export default function Main({navigation}){
             <Text style={styles.input}>Nome</Text>
             <TextInput
                 placeholder= 'Não Pode Ficar em Branco'
-                defaultValue={user.nome}
+                defaultValue={nome}
                 onChangeText={text => onChangeText(text)}
                 style={styles.textInput}
                 underlineColorAndroid={'#fff'}>
@@ -100,14 +100,26 @@ export default function Main({navigation}){
             <Text style={styles.input}>Email</Text>
             <TextInput
                 placeholder= 'Não Pode Ficar em Branco'
-                defaultValue={user.email}
+                defaultValue={email}
                 onChangeText={email => setEmail(email)}
                 style={styles.textInput}
                 underlineColorAndroid={'#fff'}>
-                
             </TextInput>
-
-
+            <Text style={styles.input}>Endereço</Text>
+            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                <View style={{flex:10}}>
+                    <TextInput
+                        style={{backgroundColor:'transparent'}}
+                        underlineColorAndroid={'#fff'}
+                        placeholder={'Cadastre um endereço'} />
+                </View>
+                <View style={{flex:1}}>
+                    <TouchableOpacity onPress={ () => navigation.navigate('AddressPicker') }>
+                        <Icon name={'plus'} />
+                    </TouchableOpacity>
+                    </View>
+            </View>
+            
             <TouchableOpacity 
             style={styles.passwordChangeButton} 
             onPress={()=> navigation.navigate('EditPassword')}>
@@ -153,7 +165,12 @@ const styles = StyleSheet.create({
         borderColor:'#fff',
         borderWidth:1,
         borderRadius:20
-        
-
+    },
+    plus:{
+        position:'absolute',
+        direction:'inherit',
+        alignContent:'flex-end'
     }
 })
+
+
