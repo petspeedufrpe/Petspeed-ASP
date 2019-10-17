@@ -16,7 +16,7 @@ export default function PetList({navigation}) {
       try {
         const {id} = user;
         const response = await api.get(
-          `/cliente/${id}`,
+          `animal/cliente/${id}`,
         );
         setData(response.data);
       } catch (error) {
@@ -27,7 +27,8 @@ export default function PetList({navigation}) {
   }, [data]);
   const ListEmptyComponent = ()=>{
     return(
-      <View style={styles.listItem}> <Text style={styles.empty}>Você Não Possui nenhum animal</Text></View>
+      <View style={styles.listItem}> 
+      </View>
     )
   }
   return (

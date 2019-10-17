@@ -126,7 +126,7 @@ export default function Login({navigation}) {
             </TouchableOpacity>
             <View style={styles.passwordRecoverContainer}>
               <Text style={styles.alternativeMessage}>
-                ___________________OU___________________
+                              OU
               </Text>
               <TouchableOpacity
                 onPress={() => {
