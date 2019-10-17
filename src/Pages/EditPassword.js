@@ -13,24 +13,26 @@ import reactotron from 'reactotron-react-native';
 
 export default function({navigation}){
     const user = navigation.state.params
+    const {id}= user;
     const [oldPasswd, setOldPasswd] = useState('');
     const [newPasswd, setNewPasswd] = useState('');
     const [confPass, setConfPass] = useState('');
-    const [flag,setFlag] = useState(false);
-    const [data,setData] = useState({});
+    let data = {};
 
+    reactotron.log(confPass)
     const handleSubmit = async ()=>{
         if(oldPasswd === '' || newPasswd === '' || confPass === ''){
-            reactotron.log(data,'aqui')
-            setData({})
+            reactotron.log('vazio')
+            setData(null)
             return false;
         }
         else if(newPasswd === confPass){
-            const teste = await setData({oldPasswd,newPasswd});
+            data = {id,senhaAntiga:oldPasswd,senhaNova:newPasswd}
             try{
-                reactotron.log(data);
-                const response = await api.post('/usuario/alterarSenha',data);
-                
+               const response = await api.put('/usuario/alterarSenha',data);
+                if(response.status === 200){
+                    navigation.navigate('Main',navigation.state.params);
+                }
             }
             catch(e){
                 reactotron.log(e);
