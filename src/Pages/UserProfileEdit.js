@@ -16,7 +16,9 @@ import reactotron from 'reactotron-react-native';
 
 
 export default function Main({navigation}){
-    const user = {pessoa:{id:1,name:'Caio',email:'teste@teste.com'}}
+    const user = navigation.state.params;
+    const user = {...user, nome: 'Test Name'}
+    //const user = {pessoa:{id:1,name:'Caio',email:'teste@teste.com'}}
     const [nome, onChangeText] = useState(user.pessoa.name);
     const [email, setEmail] = useState(user.pessoa.email);
     const [photo, setPhoto] = useState(null);
