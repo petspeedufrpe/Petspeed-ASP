@@ -16,26 +16,52 @@ import reactotron from 'reactotron-react-native';
 
 
 export default function Main({navigation}){
-    const user = {pessoa:{id:1,name:'Caio'}}
-    const [text, onChangeText] = useState(user.pessoa.name);
+    const user = {pessoa:{id:1,name:'Caio',email:'teste@teste.com'}}
+    const [nome, onChangeText] = useState(user.pessoa.name);
+    const [email, setEmail] = useState(user.pessoa.email);
     const [photo, setPhoto] = useState(null);
-    const values = {};
+    const data = new FormData();
 
+    const validate = ()=>{
+        if(nome === "" || email.length === "" ){
+            return false;
+        }
+        return true;
+    }
     const handleUpload =  ()=> {
         const options = {
             noData:true,
         };
         ImagePicker.launchImageLibrary(options, response => {
             if(response.uri){
-                setPhoto(response);   
+                setPhoto(response);
             }
-        });
+        })
     }
     const handleSave = async ()=>{
-        values.text = text
-        const {uri,type,fileName} = photo;
-        values.photo = {uri,type,fileName}
-        reactotron.log(values)
+        if(validate()){
+        data.append('name',nome);
+        data.append('email',email);
+        data.append('fileData',{
+            uri: photo.uri,
+            type: photo.type,
+            fileName: photo.fileName
+        });
+        const config = {
+            method: 'POST',
+            headers: {
+             'Accept': 'application/json',
+             'Content-Type': 'multipart/form-data',
+            },
+            body: data,
+           };
+           reactotron.log(config.body);
+        const response = await api.post(`/pessoa/editarpessoa/${user.pessoa.id}`,config
+        );
+    }
+    else{
+        reactotron.log('toaq')
+    }
     }
     return (
         <View style={styles.container}>
@@ -70,7 +96,20 @@ export default function Main({navigation}){
                 underlineColorAndroid={'#fff'}>
             </TextInput>
 
-            <TouchableOpacity style={styles.passwordChangeButton}>
+            <Text style={styles.input}>Email</Text>
+            <TextInput
+                placeholder= 'Não Pode Ficar em Branco'
+                defaultValue={user.pessoa.email}
+                onChangeText={email => setEmail(email)}
+                style={styles.textInput}
+                underlineColorAndroid={'#fff'}>
+                
+            </TextInput>
+
+
+            <TouchableOpacity 
+            style={styles.passwordChangeButton} 
+            onPress={()=> navigation.navigate('EditPassword')}>
                 <Text style={styles.input}>Alterar Senha</Text>
             </TouchableOpacity>
 

@@ -15,27 +15,33 @@ export default function({navigation}){
     const user = navigation.state.params
     const [oldPasswd, setOldPasswd] = useState('');
     const [newPasswd, setNewPasswd] = useState('');
-    const [cnfPasswd, setCnfPasswd] = useState('');
+    const [confPass, setConfPass] = useState('');
     const [flag,setFlag] = useState(false);
     const [data,setData] = useState({});
 
     const validate = () => {
         if(
-            oldPasswd !== '' 
+            oldPasswd !== ''
             && 
             newPasswd !== ''
             &&
-            cnfPasswd !== ''){
-                if(newPasswd === cnfPasswd){
+            confPass !== ''){
+                if(newPasswd === confPass){
                     setFlag(true);
-                    setData({oldPasswd,newPasswd,cnfPasswd})
+                    setData({oldPasswd,newPasswd,confPass})
                 }
+                else{ 
+                    setFlag(false);
+                 }
             }
-    }
+        else{
+            setFlag(false);
+    }};
 
-    const handleSubmit = async()=> { 
-        setFlag(validate);
-        if(flag){
+    const handleSubmit = async()=> {
+        validate();
+        reactotron.log(flag)
+           if(flag){
             try{
                 const response = await api.post('/usuario/editSenha/',data);
                 reactotron.log(response);
@@ -47,21 +53,51 @@ export default function({navigation}){
     }
 
     return(
-        <View>
-            <Text>Senha antiga</Text>
-            <TextInput onChangeText={text => setOldPasswd(text)}></TextInput>
-            <Text>Nova Senha</Text>
-            <TextInput onChangeText={text => setNewPasswd(text)}></TextInput>
-            <Text>Confirmar senha</Text>
-            <TextInput onChange ={text => setCnfPasswd(text)}></TextInput>
+        <View style={styles.container}>
+            <Text style={styles.text}>Senha antiga</Text>
+            <TextInput secureTextEntry={true} style={styles.input} onChangeText={text => setOldPasswd(text)}></TextInput>
+            <Text style={styles.text}>Nova Senha</Text>
+            <TextInput secureTextEntry={true} style={styles.input} onChangeText={text => setNewPasswd(text)}></TextInput>
+            <Text style={styles.text}>Confirmar senha</Text>
+            <TextInput secureTextEntry={true} style={styles.input} onChangeText ={text => setConfPass(text)}></TextInput>
 
-            <TouchableOpacity onPress={handleSubmit}><Text>Confirmar Alteralção</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <Text style={styles.textButton} >CONFIRMAR</Text>
+            </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container:{
-
-    }
+        flex:1,
+        backgroundColor:'#00b894'
+    },
+    text:{
+        fontSize:15,
+        fontWeight:'bold',
+        color:'#fff'
+    },
+    input: {
+        alignSelf: 'stretch',
+        borderRadius: 5,
+        fontSize: 16,
+        backgroundColor: '#FAFAF2',
+        marginVertical: 10,
+      },
+      button: {
+        alignSelf: 'stretch',
+        justifyContent: 'center',
+        height: 40,
+        marginVertical: 25,
+        marginHorizontal: 20,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#fff',
+      },
+      textButton:{
+          alignSelf:'center',
+          fontSize:15,
+          fontWeight:'bold',
+          color:'#fff'}
 })
