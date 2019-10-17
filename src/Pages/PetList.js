@@ -15,7 +15,7 @@ export default function PetList({navigation}) {
       try {
         const {id} = user;
         const response = await api.get(
-          `/cliente/encontrarAnimalPorCliente/${id}`,
+          `/cliente/${id}`,
         );
         setData(response.data);
       } catch (error) {
