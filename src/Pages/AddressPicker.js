@@ -14,6 +14,7 @@ import Geolocation from 'react-native-geolocation-service';
 import Search from '../components/SearchBar';
 import reactotron from 'reactotron-react-native';
 import Dialog from 'react-native-dialog';
+import api from '../services/api';
 
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
@@ -28,24 +29,26 @@ export default function Main({navigation}) {
   const [addressComplement, setAddressComplement] = useState(null);
   const [registerObject, setRegisterObject] = useState(null);
 
-  function finalizeRegistation() {
+  async function finalizeRegistation() {
     const latitude = region.latitude;
     const longitude = region.longitude;
     const endereco = {
       endereco: addressState,
-      compremento: addressComplement,
+      complemento: addressComplement,
       latitude,
       longitude,
     };
-    setRegisterObject({
-      usuario: user,
-      endereco,
-    });
+    try {
+      reactotron.log(registerObject);
+      await api.post('/usuario/cadastrarVeterinario', {
+        usuario: user,
+        endereco,
+      });
+      navigation.navigate('Login');
+    } catch (error) {
+      reactotron.log(error.message);
+    }
   }
-
-  useEffect(() => {
-    reactotron.log(registerObject);
-  }, [registerObject]);
 
   useEffect(() => {
     if (region != null) {
@@ -77,6 +80,8 @@ export default function Main({navigation}) {
       },
     );
   }
+
+  async function handleFinalizar(val) {}
 
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
