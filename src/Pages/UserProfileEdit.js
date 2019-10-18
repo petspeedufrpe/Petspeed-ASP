@@ -18,12 +18,33 @@ import reactotron from 'reactotron-react-native';
 
 export default function Main({navigation}){
     const user = navigation.state.params;
+    const [value,setValue] = useState('');
     reactotron.log(user);
     //const user = {pessoa:{id:1,name:'Caio',email:'teste@teste.com'}}
     const [nome, onChangeText] = useState(user!== undefined ? user.nome : "");
     const [email, setEmail] = useState(user !== undefined ? user.email: "");
     const [photo, setPhoto] = useState(AsyncStorage.getItem('foto')!== undefined ? AsyncStorage.getItem('foto') : null);
     const data = new FormData();
+
+    const storeData = async (data)=>{
+        try{
+            await AsyncStorage.setItem('@storage_key',data)
+        } catch(e){
+
+        }
+    }
+const getMyValue = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@MyApp_key');
+    reactotron.log(value);
+    setValue(value);
+  } catch(e) {
+    // read error
+  }
+}
+useEffect(()=>{
+    async ()=>{ await getMyValue()};
+},[]);
 
     const validate = ()=>{
         if(nome === "" || email.length === "" ){
@@ -37,7 +58,7 @@ export default function Main({navigation}){
         };
         ImagePicker.launchImageLibrary(options, response => {
             if(response.uri){
-                AsyncStorage.setItem('foto',response);
+                storeData(response.uri.toString());
                 setPhoto(response);
             }
         })
@@ -57,8 +78,7 @@ export default function Main({navigation}){
             },
             body: data,
            };
-           reactotron.log(config.body);
-        const response = await api.post(`/pessoa/editarpessoa/${user.id}`,config);
+        //const response = await api.post(`/usuario/posts/32`,config);
     }
     else{
         reactotron.log('toaq')
@@ -172,5 +192,3 @@ const styles = StyleSheet.create({
         alignContent:'flex-end'
     }
 })
-
-
