@@ -18,13 +18,14 @@ import reactotron from 'reactotron-react-native';
 
 export default function Main({navigation}){
     const user = navigation.state.params;
+    const {id} = user;
     const [value,setValue] = useState('');
     //reactotron.log(user);
     //const user = {pessoa:{id:1,name:'Caio',email:'teste@teste.com'}}
     const [nome, onChangeText] = useState(user!== undefined ? user.nome : "");
     const [email, setEmail] = useState(user !== undefined ? user.email: "");
     const [photo, setPhoto] = useState(AsyncStorage.getItem('foto')!== undefined ? AsyncStorage.getItem('foto') : null);
-    const data = new FormData();
+    let data = {nome:''};
 
     const getData = async ()=>{
         return await AsyncStorage.getItem('foto');
@@ -41,7 +42,7 @@ export default function Main({navigation}){
         };
         ImagePicker.launchImageLibrary(options, response => {
             if(response.uri){
-                AsyncStorage.setItem('foto',response.uri);''
+                AsyncStorage.setItem('foto',response.uri);
                 setPhoto(response);
             }
         })
@@ -49,21 +50,8 @@ export default function Main({navigation}){
     const handleSave = async ()=>{
         //const a = await AsyncStorage.getItem('foto');
         if(validate()){
-        data.append('name',nome);
-        data.append('email',email);
-        data.append('file',{
-            photo
-        });
-        const config = {
-            method: 'POST',
-            headers: {
-             'Accept': 'application/json',
-             'Content-Type': 'multipart/form-data',
-            },
-            body: data,
-           };
-           const response = await api.post(``)
-        //const response = await api.post(`/usuario/posts/32`,config);
+            data.nome = nome
+           const response = await api.put(`/pessoa/editarPessoa/${id}`,data)
     }
     else{
         reactotron.log('toaq')
