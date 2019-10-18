@@ -1,4 +1,4 @@
-import React, {useState, useEffect,useLayoutEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -10,42 +10,51 @@ export default function PetList({navigation}) {
   const [data, setData] = useState([]);
   const user = navigation.state.params;
 
-
   useLayoutEffect(() => {
     async function loadAnimals() {
       try {
         const {id} = user;
-        const response = await api.get(
-          `animal/cliente/${id}`,
-        );
+        const response = await api.get(`animal/cliente/${id}`);
         setData(response.data);
       } catch (error) {
         console.warn(error.message);
       }
     }
     loadAnimals();
-  }, [data]);
-  const ListEmptyComponent = ()=>{
-    return(
-      <View style={{flex:1,alignContent:'center',alignItems:'center',alignSelf:'center'}}>
-    <Text style={styles.empty}>Você não possui nenhum animal cadastrado. </Text>
-    </View>)
-  }
+  }, [data, user]);
+  const ListEmptyComponent = () => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignContent: 'center',
+          alignItems: 'center',
+          alignSelf: 'center',
+        }}>
+        <Text style={styles.empty}>
+          Você não possui nenhum animal cadastrado.{' '}
+        </Text>
+      </View>
+    );
+  } ;
   return (
     <>
       <View style={{flex: 3}}>
         <FlatList
-        //ListEmptyComponent={ListEmptyComponent}
+          //ListEmptyComponent={ListEmptyComponent}
           style={styles.list}
           data={data}
           keyExtractor={data => data.id.toString()}
-          renderItem={ ({item}) => (
-            <TouchableOpacity onPress={()=> {navigation.navigate('AnimalDetails',item)}}>
-            <View style={styles.listItem}>
-              <Text style={styles.nome}>{`Nome: ${item.nome}`}</Text>
-              <Text style={styles.nome}>{`Raça: ${item.raca}`}</Text>
-              <Text style={styles.nome}>{`Peso: ${item.peso}kg`}</Text>
-            </View>
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('AnimalDetails', item);
+              }}>
+              <View style={styles.listItem}>
+                <Text style={styles.nome}>{`Nome: ${item.nome}`}</Text>
+                <Text style={styles.nome}>{`Raça: ${item.raca}`}</Text>
+                <Text style={styles.nome}>{`Peso: ${item.peso}kg`}</Text>
+              </View>
             </TouchableOpacity>
           )}
         />
@@ -90,11 +99,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 100,
   },
-  empty:{
-    margin:20,
-    justifyContent:'center',
-    fontSize:35,
-    fontWeight:'bold',
-    color:'#fff',
-  }
+  empty: {
+    margin: 20,
+    justifyContent: 'center',
+    fontSize: 35,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
 });

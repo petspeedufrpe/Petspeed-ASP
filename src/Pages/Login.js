@@ -36,7 +36,7 @@ export default function Login({navigation}) {
       const response = await api.post('/usuario/login', values);
       if (response.status === 200) {
         const res = response.data;
-        const {id, email, account,nome} = res.user;
+        const {id, email, account, nome} = res.user;
         const {token} = res;
         const data = {
           id,
@@ -125,13 +125,11 @@ export default function Login({navigation}) {
               </Text>
             </TouchableOpacity>
             <View style={styles.passwordRecoverContainer}>
-              <Text style={styles.alternativeMessage}>
-                              OU
-              </Text>
+              <Text style={styles.alternativeMessage}>OU</Text>
               <TouchableOpacity
                 onPress={() => {
                   //
-                  
+
                   navigation.navigate('UserProfileEdit');
                 }}>
                 <Text

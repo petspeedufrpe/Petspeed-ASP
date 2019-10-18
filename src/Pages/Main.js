@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {PermissionsAndroid, View, StyleSheet} from 'react-native';
+import {
+  PermissionsAndroid,
+  View,
+  StyleSheet,
+  TextInput,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
@@ -12,11 +20,12 @@ Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
 export default function Main({navigation}) {
   const user = navigation.state.params;
-  reactotron.log(user);
   const [requestMapCameraChange, SetRequestMapCameraChange] = useState(false);
   const [locationGaranted, setLocationGaranted] = useState(false);
   const [region, setRegion] = useState(null);
   const [markers, setMarkers] = useState([]);
+  const [medico, setMedico] = useState(null);
+  const [txt, setTxt] = useState('');
 
   useEffect(() => {
     async function loadMedics() {
@@ -98,6 +107,55 @@ export default function Main({navigation}) {
             />
           ))}
         </MapView>
+        <View>
+          <TextInput
+            style={{
+              backgroundColor: '#ffff',
+            }}
+            placeholder={'Teste'}
+            onChangeText={text => {
+              reactotron.log(text);
+              async function a() {
+                try {
+                  const medico = await api.post('medico/findnome', {
+                    nome: text,
+                  });
+                  setMedico(medico);
+                  setTxt(text);
+                  reactotron.log(medico.pessoa);
+                } catch (error) {
+                  a();
+                }
+              }
+              a();
+            }}
+          />
+          <Text style={{backgroundColor: '#aacf'}}>{txt}</Text>
+          {medico && (
+            <View>
+              <FlatList
+                //ListEmptyComponent={ListEmptyComponent}
+                style={styles.list}
+                data={medico}
+                keyExtractor={data => data.id.toString()}
+                renderItem={({item}) => (
+                  <TouchableOpacity>
+                    <View style={styles.listItem}>
+                      <Text style={styles.nome}>{`Nome: ${
+                        item.pessoa.nome
+                      }`}</Text>
+                      <Text style={styles.nome}>{`cpf: ${
+                        item.pessoa.cpf
+                      }`}</Text>
+                      <Text style={styles.nome}>{`crmv: ${item.crmv}`}</Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          )}
+          <View />
+        </View>
       </View>
       <BottomNavBar navigation={navigation} />
     </>
@@ -110,5 +168,16 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  list: {
+    zIndex: 3,
+    paddingHorizontal: 30,
+    backgroundColor: '#00b894',
+  },
+  listItem: {
+    backgroundColor: '#EEE',
+    marginTop: 20,
+    padding: 30,
+    minHeight: 30,
   },
 });

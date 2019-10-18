@@ -13,7 +13,6 @@ import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
 import Search from '../components/SearchBar';
 import reactotron from 'reactotron-react-native';
-import markerImage from '../assets/markerImage.png';
 import Dialog from 'react-native-dialog';
 
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
@@ -121,14 +120,6 @@ export default function Main({navigation}) {
             );
             setLocationGaranted(true);
             SetRequestMapCameraChange(true);
-          }}
-          onRegionChangeComplete={result => {
-            setRegion({
-              latitude: result.latitude,
-              longitude: result.longitude,
-              latitudeDelta: result.latitudeDelta,
-              longitudeDelta: result.longitudeDelta,
-            });
           }}>
           {marker && (
             <Marker
@@ -139,9 +130,6 @@ export default function Main({navigation}) {
             />
           )}
         </MapView>
-        <View style={styles.imageContainer}>
-          <Image style={styles.markerImage} source={markerImage} />
-        </View>
         <Search setRegion={setRegion} />
         <View>
           <Dialog.Container
@@ -207,10 +195,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#fff',
     fontWeight: 'bold',
-  },
-  imageContainer: {
-    justifyContent: 'center',
-    alignSelf: 'center',
   },
   markerImage: {
     resizeMode: 'contain',
