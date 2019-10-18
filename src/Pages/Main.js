@@ -111,8 +111,14 @@ export default function Main({navigation}) {
           <TextInput
             style={{
               backgroundColor: '#ffff',
+              marginTop: 18,
+              marginHorizontal: 18,
+              borderRadius: 8,
+              borderWidth: 3,
+              borderColor: '#5c5c5c',
+              paddingStart: 20,
             }}
-            placeholder={'Teste'}
+            placeholder={'Busque aqui um médico'}
             onChangeText={text => {
               reactotron.log(text);
               async function a() {
@@ -120,17 +126,20 @@ export default function Main({navigation}) {
                   const medico = await api.post('medico/findnome', {
                     nome: text,
                   });
-                  setMedico(medico);
+                  setMedico(medico.data);
                   setTxt(text);
-                  reactotron.log(medico.pessoa);
+                  reactotron.log(medico);
                 } catch (error) {
-                  a();
+                  reactotron.log(error.message);
                 }
               }
-              a();
+              if (text === '') {
+                setMedico(null);
+              } else {
+                a();
+              }
             }}
           />
-          <Text style={{backgroundColor: '#aacf'}}>{txt}</Text>
           {medico && (
             <View>
               <FlatList
@@ -141,13 +150,15 @@ export default function Main({navigation}) {
                 renderItem={({item}) => (
                   <TouchableOpacity>
                     <View style={styles.listItem}>
-                      <Text style={styles.nome}>{`Nome: ${
+                      <Text style={styles.listItemText}>{`Nome: ${
                         item.pessoa.nome
                       }`}</Text>
-                      <Text style={styles.nome}>{`cpf: ${
+                      <Text style={styles.listItemText}>{`CPF: ${
                         item.pessoa.cpf
                       }`}</Text>
-                      <Text style={styles.nome}>{`crmv: ${item.crmv}`}</Text>
+                      <Text style={styles.listItemText}>{`CRMV: ${item.crmv}-${
+                        item.uf
+                      }`}</Text>
                     </View>
                   </TouchableOpacity>
                 )}
@@ -170,14 +181,22 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   list: {
-    zIndex: 3,
+    marginTop: 7,
+    borderRadius: 5,
+    borderColor: '#00b894',
+    borderWidth: 3,
+    marginHorizontal: 20,
     paddingHorizontal: 30,
-    backgroundColor: '#00b894',
+    backgroundColor: '#a1a1a1',
   },
   listItem: {
     backgroundColor: '#EEE',
-    marginTop: 20,
+    borderRadius: 4,
+    marginVertical: 10,
     padding: 30,
-    minHeight: 30,
+    minHeight: 20,
+  },
+  listItemText: {
+    fontSize: 16,
   },
 });
