@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,18 +6,29 @@ import {
   Alert,
   StyleSheet,
   TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 import reactotron from 'reactotron-react-native';
 
 export default function UserProfile({navigation}) {
   const user = navigation.state.params;
-  reactotron.log(user);
+  const [photo,setPhoto] = useState("");
   const {nome} = user;
+
+  const getPhoto = async () => {
+    const a = await AsyncStorage.getItem('foto');
+    setPhoto(a);
+    reactotron.log(a);
+   }
+
+   useEffect(()=>{
+     getPhoto();
+   })
   return (
     <View style={styles.container}>
       <Image
         style={styles.imageProfie}
-        source={require('../assets/profile.png')}
+        source={{uri:photo}}
         resizeMode="center"
       />
       <Text style={styles.nomePerfil}>{nome}</Text>
@@ -44,7 +55,7 @@ export default function UserProfile({navigation}) {
 
         <TouchableOpacity
           style={styles.buttonSair}
-          /*onPress={'funcaoDeSair'}*/
+          onPress={getPhoto}
         >
           <Text style={styles.buttonText}>Sair</Text>
         </TouchableOpacity>

@@ -21,7 +21,7 @@ export default function PetList({navigation}) {
       }
     }
     loadAnimals();
-  }, [data, user]);
+  }, [user]);
   const ListEmptyComponent = () => {
     return (
       <View
@@ -36,7 +36,7 @@ export default function PetList({navigation}) {
         </Text>
       </View>
     );
-  } ;
+  };
   return (
     <>
       <View style={{flex: 3}}>

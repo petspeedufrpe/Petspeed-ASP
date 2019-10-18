@@ -13,7 +13,7 @@ import reactotron from 'reactotron-react-native';
 
 export default function({navigation}){
     const user = navigation.state.params
-    const {id}= user;
+    const {idUsuario}= user;
     const [oldPasswd, setOldPasswd] = useState('');
     const [newPasswd, setNewPasswd] = useState('');
     const [confPass, setConfPass] = useState('');
@@ -27,7 +27,7 @@ export default function({navigation}){
             return false;
         }
         else if(newPasswd === confPass){
-            data = {id,senhaAntiga:oldPasswd,senhaNova:newPasswd}
+            data = {id:idUsuario,senhaAntiga:oldPasswd,senhaNova:newPasswd}
             try{
                const response = await api.put('/usuario/alterarSenha',data);
                 if(response.status === 200){
