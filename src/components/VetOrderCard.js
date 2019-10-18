@@ -242,9 +242,20 @@ const response = [
   },
 ];
 
-export default function VetOrderCard() {
+export default function VetOrderCard({navigation}) {
+  const medico = navigation.state.params;
+  const {email} = medico;
   return (
     <View style={{flex: 3}}>
+      <View style={styles.container}>
+        <Text
+          style={{
+            marginHorizontal: 10,
+            alignSelf: 'center',
+            fontSize: 15,
+            fontWeight: 'bold',
+          }}>{`Olá ${email}, Estas são as suas ordens de serviço`}</Text>
+      </View>
       <FlatList
         style={styles.list}
         data={response}

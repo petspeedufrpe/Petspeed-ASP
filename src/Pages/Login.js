@@ -55,7 +55,7 @@ export default function Login({navigation}) {
         if (account === 'cliente') {
           navigation.navigate('Main', data);
         } else if (account === 'medico') {
-          navigation.navigate('VetMain', data);
+          navigation.navigate('VetOrderCard', data);
         }
       }
     } catch (error) {
