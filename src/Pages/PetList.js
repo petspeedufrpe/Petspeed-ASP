@@ -35,7 +35,7 @@ export default function PetList({navigation}) {
     <>
       <View style={{flex: 3}}>
         <FlatList
-        ListEmptyComponent={() => ListEmptyComponent()}
+        ListEmptyComponent={ListEmptyComponent}
           style={styles.list}
           data={data}
           keyExtractor={data => data.id.toString()}
