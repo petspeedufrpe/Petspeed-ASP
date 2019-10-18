@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useLayoutEffect} from 'react';
 
 import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,7 +11,7 @@ export default function PetList({navigation}) {
   const user = navigation.state.params;
 
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     async function loadAnimals() {
       try {
         const {id} = user;
@@ -24,7 +24,7 @@ export default function PetList({navigation}) {
       }
     }
     loadAnimals();
-  }, []);
+  }, [data]);
   const ListEmptyComponent = ()=>{
     return(
       <View style={{flex:1,alignContent:'center',alignItems:'center',alignSelf:'center'}}>
@@ -35,12 +35,12 @@ export default function PetList({navigation}) {
     <>
       <View style={{flex: 3}}>
         <FlatList
-        ListEmptyComponent={ListEmptyComponent}
+        //ListEmptyComponent={ListEmptyComponent}
           style={styles.list}
           data={data}
           keyExtractor={data => data.id.toString()}
           renderItem={ ({item}) => (
-            <TouchableOpacity onPress={navigation.navigate('AnimalDetails',item)}>
+            <TouchableOpacity onPress={()=> {navigation.navigate('AnimalDetails',item)}}>
             <View style={styles.listItem}>
               <Text style={styles.nome}>{`Nome: ${item.nome}`}</Text>
               <Text style={styles.nome}>{`Raça: ${item.raca}`}</Text>
