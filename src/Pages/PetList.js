@@ -24,7 +24,7 @@ export default function PetList({navigation}) {
       }
     }
     loadAnimals();
-  }, [data]);
+  }, []);
   const ListEmptyComponent = ()=>{
     return(
       <View style={{flex:1,alignContent:'center',alignItems:'center',alignSelf:'center'}}>
