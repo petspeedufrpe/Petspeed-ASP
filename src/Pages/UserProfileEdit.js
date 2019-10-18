@@ -26,6 +26,9 @@ export default function Main({navigation}){
     const [photo, setPhoto] = useState(AsyncStorage.getItem('foto')!== undefined ? AsyncStorage.getItem('foto') : null);
     const data = new FormData();
 
+    const getData = async ()=>{
+        return await AsyncStorage.getItem('foto');
+    }
     const validate = ()=>{
         if(nome === "" || email.length === "" ){
             return false;
@@ -38,12 +41,13 @@ export default function Main({navigation}){
         };
         ImagePicker.launchImageLibrary(options, response => {
             if(response.uri){
-                AsyncStorage.setItem('foto',JSON.stringify(response.uri));
+                AsyncStorage.setItem('foto',response.uri);''
                 setPhoto(response);
             }
         })
     }
     const handleSave = async ()=>{
+        //const a = await AsyncStorage.getItem('foto');
         if(validate()){
         data.append('name',nome);
         data.append('email',email);
@@ -58,6 +62,7 @@ export default function Main({navigation}){
             },
             body: data,
            };
+           const response = await api.post(``)
         //const response = await api.post(`/usuario/posts/32`,config);
     }
     else{
@@ -122,7 +127,7 @@ export default function Main({navigation}){
             
             <TouchableOpacity 
             style={styles.passwordChangeButton} 
-            onPress={()=> navigation.navigate('EditPassword')}>
+            onPress={()=> navigation.navigate('EditPassword',user)}>
                 <Text style={styles.input}>Alterar Senha</Text>
             </TouchableOpacity>
 
