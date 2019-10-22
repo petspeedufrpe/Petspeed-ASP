@@ -16,6 +16,8 @@ import api from '../services/api';
 import Search from '../components/SearchBar';
 import reactotron from 'reactotron-react-native';
 
+import MedicMarkerCard from '../components/MedicMarkerCard';
+
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
 export default function Main({navigation}) {
@@ -26,6 +28,7 @@ export default function Main({navigation}) {
   const [markers, setMarkers] = useState([]);
   const [medico, setMedico] = useState(null);
   const [txt, setTxt] = useState('');
+
 
   useEffect(() => {
     async function loadMedics() {
@@ -104,6 +107,8 @@ export default function Main({navigation}) {
               }}
               title={marker.title}
               description={marker.description}
+              onPress={(
+                <MedicMarkerCard navigation={navigation}/>)}
             />
           ))}
         </MapView>

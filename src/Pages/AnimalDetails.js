@@ -10,17 +10,20 @@ import ImagePicker from 'react-native-image-picker';
 
 
 export default function Pages({navigation}) {
-    const {id,nome:name,raca:raça,peso:weight,nascimento:birth} = navigation.state.params;
+    const {id:idAnimal,nome:name,raca:raça,peso:weight,nascimento:birth} = navigation.state.params;
     const [nome,setNome] = useState(name === undefined ? "" : name);
     const [raca,setRaca] = useState(raça === undefined ? "" : raça);
     const [peso, setPeso] = useState(weight === undefined ? "" : weight);
     const [nascimento,setBirth] = useState(birth === undefined ? "" : birth);
     const [photo,setPhoto] = useState(undefined);
+    let data = {nome:nome,raca:raca,peso:peso,nascimento:nascimento,idcliente:32}
 
     const handleSave = async () => {
-        const data = {nome,raca,peso,nascimento};
-        reactotron.log(data);
-        const response = api.put(`/animal/editarAnimal/${{idAnimal:id}}`,data);
+        data.nome= nome
+        data.peso= peso
+        data.raca= raca
+        data.nascimento= nascimento
+        const response = api.put(`/animal/editarAnimal/${idAnimal}}`,data);
         if(response === 200){
             console.warn('Alterado Com Sucesso!');
             navigation.goBack()
