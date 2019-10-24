@@ -15,6 +15,8 @@ import VetOrderCard from './components/VetOrderCard';
 import UserProfileEdit from './Pages/UserProfileEdit'
 import EditPassword from './Pages/EditPassword';
 import AnimalDetails from './Pages/AnimalDetails'
+import AnimalSelect from './Pages/AnimalSelect'
+
 const MainNavigator = createStackNavigator(
   {
     Login,
@@ -32,6 +34,7 @@ const MainNavigator = createStackNavigator(
     UserProfileEdit,
     EditPassword,
     AnimalDetails,
+    AnimalSelect,
   },
   {
     headerMode: 'none',

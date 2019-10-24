@@ -8,16 +8,15 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, {Marker,Callout} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
 import BottomNavBar from '../components/bottomNavBar';
 import api from '../services/api';
 import Search from '../components/SearchBar';
+import Dialog from 'react-native-dialog';
 import reactotron from 'reactotron-react-native';
-
-import MedicMarkerCard from '../components/MedicMarkerCard';
-
+import MedicMarkerCard from '../components/MedicMarkerCard'
 Geocoder.init('AIzaSyAws3DiTDOsKOtriFEzepkD5pBysglvgkA');
 
 export default function Main({navigation}) {
@@ -28,7 +27,11 @@ export default function Main({navigation}) {
   const [markers, setMarkers] = useState([]);
   const [medico, setMedico] = useState(null);
   const [txt, setTxt] = useState('');
-
+  const [dialogVisible, setDialogVisible] = useState(false);
+  let dataOs = {
+    medico:null,
+    user:null
+  };
 
   useEffect(() => {
     async function loadMedics() {
@@ -42,6 +45,7 @@ export default function Main({navigation}) {
             longitude: medico.pessoa.endereco.longitude,
             title: medico.pessoa.nome,
             description: medico.telefone,
+            data:medico
           };
           setMarkers(markers => [...markers, marker]);
         }
@@ -85,6 +89,13 @@ export default function Main({navigation}) {
     SetRequestMapCameraChange(false);
   }, [locationGaranted, requestMapCameraChange, user]);
 
+  const handleConfirm = (data)=> {
+    const user = navigation.state.params
+    dataOs.medico = data
+      dataOs.user = user
+    navigation.navigate('AnimalSelect',dataOs)
+  }
+
   return (
     <>
       <View style={styles.container}>
@@ -99,17 +110,49 @@ export default function Main({navigation}) {
             setLocationGaranted(true);
             SetRequestMapCameraChange(true);
           }}>
-          {markers.map(marker => (
+          {markers.map((marker,index) =>  (
             <Marker
+              key={index}
               coordinate={{
                 latitude: marker.latitude,
                 longitude: marker.longitude,
               }}
               title={marker.title}
               description={marker.description}
-              onPress={(
-                <MedicMarkerCard navigation={navigation}/>)}
+              onPress={() => setDialogVisible(true)}
+              > 
+              <View>
+          <Dialog.Container
+            visible={dialogVisible}
+            onBackdropPress={() => {
+              setDialogVisible(false);
+            }}>
+            <Dialog.Title>{`Deseja solicitar o atendimento ao médico ${marker.title} ?`}</Dialog.Title>
+            <Dialog.Description>
+              {`Telefone: ${marker.description}`}
+            </Dialog.Description>
+            <Dialog.Button
+              onPress={() => {
+                setDialogVisible(false);
+              }}
+              label="cancelar"
             />
+            <Dialog.Button
+              onPress={() => {
+                setDialogVisible(false);
+                handleConfirm(marker.data);
+              }}
+              label="agendar"
+            />
+          </Dialog.Container>
+        </View>
+          <Callout
+            tooltip={true}
+            style={styles.container}
+            onPress={()=> markerClick()}
+          >
+                   </Callout>
+            </Marker>
           ))}
         </MapView>
         <View>
