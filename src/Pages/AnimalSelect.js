@@ -6,10 +6,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import api from '../services/api';
 import reactotron from 'reactotron-react-native';
 
-export default function PetList({navigation}) {
-  const medico = navigation.state.medico
+export default function AnimalSelect({navigation}) {
+  //const medico = navigation.state.medico
   reactotron.log(navigation.state)
-  const user = navigation.state.params.user;
+  const dataOs = navigation.state.params.dataOs;
+  const {user} = dataOs;
 
   useLayoutEffect(() => {
     async function loadAnimals() {

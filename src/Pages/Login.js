@@ -128,13 +128,11 @@ export default function Login({navigation}) {
               <Text style={styles.alternativeMessage}>OU</Text>
               <TouchableOpacity
                 onPress={() => {
-                  //
-
-                  navigation.navigate('UserProfileEdit');
+                  //navigation.navigate('');
                 }}>
                 <Text
                   onPress={() => {
-                    navigation.navigate('UserProfileEdit');
+                    //navigation.navigate('');
                   }}
                   style={styles.lostPasswordMessage}>
                   Esqueci Minha Senha.

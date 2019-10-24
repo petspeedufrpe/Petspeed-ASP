@@ -28,8 +28,10 @@ export default function Main({navigation}) {
   const [medico, setMedico] = useState(null);
   const [txt, setTxt] = useState('');
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogText, setDialogText] = useState({});
+
   let dataOs = {
-    medico:null,
+    medico:21,
     user:null
   };
 
@@ -95,6 +97,10 @@ export default function Main({navigation}) {
       dataOs.user = user
     navigation.navigate('AnimalSelect',dataOs)
   }
+  useEffect(()=>{if(dialogText){
+    reactotron.log(dialogText)
+  }},[dialogText])
+
 
   return (
     <>
@@ -119,7 +125,10 @@ export default function Main({navigation}) {
               }}
               title={marker.title}
               description={marker.description}
-              onPress={() => setDialogVisible(true)}
+              onPress={() => {
+                setDialogText({nome: marker.title, telefone: marker.description,})
+                setRegion({...region,  latitude: marker.latitude, longitude: marker.longitude})
+              }}
               > 
               <View>
           <Dialog.Container
@@ -127,9 +136,9 @@ export default function Main({navigation}) {
             onBackdropPress={() => {
               setDialogVisible(false);
             }}>
-            <Dialog.Title>{`Deseja solicitar o atendimento ao médico ${marker.title} ?`}</Dialog.Title>
+            <Dialog.Title>{`Deseja solicitar o atendimento ao ${dialogText.nome} sss ?`}</Dialog.Title>
             <Dialog.Description>
-              {`Telefone: ${marker.description}`}
+              {`Telefone: ${dialogText.telefone}`}
             </Dialog.Description>
             <Dialog.Button
               onPress={() => {
@@ -149,7 +158,7 @@ export default function Main({navigation}) {
           <Callout
             tooltip={true}
             style={styles.container}
-            onPress={()=> markerClick()}
+            onPress={()=>alert('b')}
           >
                    </Callout>
             </Marker>
