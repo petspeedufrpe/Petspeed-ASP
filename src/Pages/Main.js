@@ -28,7 +28,7 @@ export default function Main({navigation}) {
   const [medico, setMedico] = useState(null);
   const [txt, setTxt] = useState('');
   const [dialogVisible, setDialogVisible] = useState(false);
-  const [dialogText, setDialogText] = useState({});
+  const [dialogText, setDialogText] = useState();
 
   let dataOs = {
     medico:21,
@@ -71,8 +71,8 @@ export default function Main({navigation}) {
           setRegion({
             latitude: latitude,
             longitude: longitude,
-            latitudeDelta: 0.0143,
-            longitudeDelta: 0.0134,
+            latitudeDelta: 0.0243,
+            longitudeDelta: 0.0234,
           });
 
           alert(`Bem vindo ${email}!\n\nVocê está em: ${address}`);
@@ -99,6 +99,7 @@ export default function Main({navigation}) {
   }
   useEffect(()=>{if(dialogText){
     reactotron.log(dialogText)
+    setDialogVisible(true)
   }},[dialogText])
 
 
@@ -125,18 +126,15 @@ export default function Main({navigation}) {
               }}
               title={marker.title}
               description={marker.description}
-              onPress={() => {
-                setDialogText({nome: marker.title, telefone: marker.description,})
-                setRegion({...region,  latitude: marker.latitude, longitude: marker.longitude})
-              }}
+              
               > 
               <View>
-          <Dialog.Container
+          {dialogText && <Dialog.Container
             visible={dialogVisible}
             onBackdropPress={() => {
               setDialogVisible(false);
             }}>
-            <Dialog.Title>{`Deseja solicitar o atendimento ao ${dialogText.nome} sss ?`}</Dialog.Title>
+            <Dialog.Title>{`Deseja solicitar o atendimento ao médico ${dialogText.nome}?`}</Dialog.Title>
             <Dialog.Description>
               {`Telefone: ${dialogText.telefone}`}
             </Dialog.Description>
@@ -153,12 +151,15 @@ export default function Main({navigation}) {
               }}
               label="agendar"
             />
-          </Dialog.Container>
+          </Dialog.Container>}
         </View>
           <Callout
             tooltip={true}
             style={styles.container}
-            onPress={()=>alert('b')}
+            onPress={() => {
+              setDialogText({nome: marker.title, telefone: marker.description,})
+              setRegion({...region,  latitude: marker.latitude, longitude: marker.longitude})
+            }}
           >
                    </Callout>
             </Marker>
