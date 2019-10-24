@@ -28,6 +28,7 @@ export default function Main({navigation}) {
   const [medico, setMedico] = useState(null);
   const [txt, setTxt] = useState('');
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [globalMarker,setGlobalMarker] = useState(null)
   let dataOs = {
     medico:null,
     user:null
@@ -38,9 +39,11 @@ export default function Main({navigation}) {
       try {
         const rawquery = await api.get('medico/all');
         const medics = rawquery.data;
+        reactotron.log(medics);
         for (var i = 0; i < medics.length; i++) {
           const medico = medics[i];
           let marker = {
+            id:medico.id,
             latitude: medico.pessoa.endereco.latitude,
             longitude: medico.pessoa.endereco.longitude,
             title: medico.pessoa.nome,
@@ -56,6 +59,7 @@ export default function Main({navigation}) {
 
     loadMedics();
   }, []);
+
 
   useEffect(() => {
     if (locationGaranted && requestMapCameraChange) {
@@ -89,12 +93,46 @@ export default function Main({navigation}) {
     SetRequestMapCameraChange(false);
   }, [locationGaranted, requestMapCameraChange, user]);
 
+  const handleMarkerPress = (marker) => {
+    setGlobalMarker(marker);
+    setDialogVisible(true);
+  }
+
   const handleConfirm = (data)=> {
-    const user = navigation.state.params
     dataOs.medico = data
       dataOs.user = user
     navigation.navigate('AnimalSelect',dataOs)
   }
+
+  const renderDlg = () => {
+    if(globalMarker){
+      return(
+    <View style={{position:'absolute'}}>
+    <Dialog.Container 
+      visible={dialogVisible}
+      onBackdropPress={() => {
+        setDialogVisible(false);
+      }}>
+      <Dialog.Title>{`Deseja solicitar o atendimento ao médico ${globalMarker.title} ?`}</Dialog.Title>
+      <Dialog.Description>
+        {`Telefone: ${globalMarker.description}`}
+      </Dialog.Description>
+      <Dialog.Button
+        onPress={() => {
+          setDialogVisible(false);
+        }}
+        label="cancelar"
+      />
+      <Dialog.Button
+        onPress={() => {
+          setDialogVisible(false);
+          handleConfirm(globalMarker.data);
+        }}
+        label="agendar"
+      />
+    </Dialog.Container>
+  </View>
+  )}}
 
   return (
     <>
@@ -119,42 +157,18 @@ export default function Main({navigation}) {
               }}
               title={marker.title}
               description={marker.description}
-              onPress={() => setDialogVisible(true)}
+              onPress={() => handleMarkerPress(marker)}
               > 
-              <View>
-          <Dialog.Container
-            visible={dialogVisible}
-            onBackdropPress={() => {
-              setDialogVisible(false);
-            }}>
-            <Dialog.Title>{`Deseja solicitar o atendimento ao médico ${marker.title} ?`}</Dialog.Title>
-            <Dialog.Description>
-              {`Telefone: ${marker.description}`}
-            </Dialog.Description>
-            <Dialog.Button
-              onPress={() => {
-                setDialogVisible(false);
-              }}
-              label="cancelar"
-            />
-            <Dialog.Button
-              onPress={() => {
-                setDialogVisible(false);
-                handleConfirm(marker.data);
-              }}
-              label="agendar"
-            />
-          </Dialog.Container>
-        </View>
-          <Callout
+            <Callout
             tooltip={true}
             style={styles.container}
             onPress={()=> markerClick()}
           >
-                   </Callout>
+          </Callout>
             </Marker>
           ))}
         </MapView>
+        {renderDlg()}
         <View>
           <TextInput
             style={{

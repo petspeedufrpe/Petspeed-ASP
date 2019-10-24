@@ -7,10 +7,14 @@ import api from '../services/api';
 import reactotron from 'reactotron-react-native';
 
 export default function PetList({navigation}) {
-  const medico = navigation.state.medico
+  let os = {};
+  reactotron.log(navigation.state.params)
+  const [data,setData]= useState()
+  const medico = navigation.state.params.medico
   reactotron.log(navigation.state)
   const user = navigation.state.params.user;
-
+  os.medico = medico;
+  os.user = user;
   useLayoutEffect(() => {
     async function loadAnimals() {
       try {
@@ -49,7 +53,8 @@ export default function PetList({navigation}) {
           renderItem={({item}) => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('AnimalDetails', item);
+                os.animal = item;
+                navigation.navigate('Colocar Page de Sintomas', os);
               }}>
               <View style={styles.listItem}>
                 <Text style={styles.nome}>{`Nome: ${item.nome}`}</Text>
