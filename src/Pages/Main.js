@@ -73,8 +73,8 @@ export default function Main({navigation}) {
           setRegion({
             latitude: latitude,
             longitude: longitude,
-            latitudeDelta: 0.0143,
-            longitudeDelta: 0.0134,
+            latitudeDelta: 0.0243,
+            longitudeDelta: 0.0234,
           });
 
           alert(`Bem vindo ${email}!\n\nVocê está em: ${address}`);
@@ -103,7 +103,7 @@ export default function Main({navigation}) {
       dataOs.user = user
     navigation.navigate('AnimalSelect',dataOs)
   }
-
+ 
   const renderDlg = () => {
     if(globalMarker){
       return(
@@ -162,7 +162,9 @@ export default function Main({navigation}) {
             <Callout
             tooltip={true}
             style={styles.container}
-            onPress={()=> markerClick()}
+            onPress={() => {
+                console.log('teste')
+            }}
           >
           </Callout>
             </Marker>
