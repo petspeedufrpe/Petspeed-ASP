@@ -54,7 +54,7 @@ export default function PetList({navigation}) {
             <TouchableOpacity
               onPress={() => {
                 os.animal = item;
-                navigation.navigate('Colocar Page de Sintomas', os);
+                navigation.navigate('SinptomsList', os);
               }}>
               <View style={styles.listItem}>
                 <Text style={styles.nome}>{`Nome: ${item.nome}`}</Text>
@@ -69,7 +69,7 @@ export default function PetList({navigation}) {
         <TouchableOpacity
           style={styles.fab}
           onPress={() => {
-            navigation.navigate('ListSimptoms', navigation.state.params);
+            navigation.navigate('AnimalRegister', navigation.state.params);
           }}>
           <Icon name={'plus'} size={22} />
         </TouchableOpacity>

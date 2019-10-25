@@ -128,7 +128,7 @@ export default function Login({navigation}) {
               <Text style={styles.alternativeMessage}>OU</Text>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('OrdemServico');
+                  navigation.navigate('SinptomsList');
                 }}>
                 <Text
                   onPress={() => {

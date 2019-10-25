@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, View, Switch,TouchableOpacity } from 'react-native';
 import reactotron from 'reactotron-react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { TextInput } from 'react-native-gesture-handler';
 
 
 class InterestsList extends Component {
@@ -40,6 +39,8 @@ class InterestsList extends Component {
     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
       <Text style={styles.item}>{item.key} </Text>
       <Switch
+        trackColor={{true:'red'}}
+        thumbColor={'#fff'}
         onValueChange={(value) => this.setSwitchValue(value, index)}
         value={item.switch}
       />
