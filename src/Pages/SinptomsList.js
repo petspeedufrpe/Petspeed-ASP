@@ -9,29 +9,50 @@ class InterestsList extends Component {
     super();
     this.state = {
        listKeys: [
-      {key: 'Vomito', switch : false},
-      {key: 'Diarreia', switch : false},
-      {key: 'Desidratacao', switch : false},
-      {key: 'Febre', switch : false},
-      {key: 'Letargia', switch : false},
-      {key: 'Olhos vermelhos', switch : false},
-      {key: 'Tosse', switch : false},
-      {key: 'Dor abdominal', switch : false},
-      {key: 'Paralisia', switch : false},
-      {key: 'Excesso de urina', switch : false},
-      {key: 'Mandíbula caida', switch : false},
-      {key: 'Indisposição', switch : false},
-      {key: 'Nauseas', switch : false},
-      {key: 'Sede Excessiva', switch : false},
-      {key: 'Aagressividade', switch : false},
-    ]
+      {key: 'Vomito', bool : false},
+      {key: 'Diarreia', bool : false},
+      {key: 'Desidratacao', bool : false},
+      {key: 'Febre', bool : false},
+      {key: 'Letargia', bool : false},
+      {key: 'Olhos vermelhos', bool : false},
+      {key: 'Tosse', bool : false},
+      {key: 'Dor abdominal', bool : false},
+      {key: 'Paralisia', bool : false},
+      {key: 'Excesso de urina', bool : false},
+      {key: 'Mandíbula caida', bool : false},
+      {key: 'Indisposição', bool : false},
+      {key: 'Nauseas', bool : false},
+      {key: 'Sede Excessiva', bool : false},
+      {key: 'Aagressividade', bool : false},
+    ],
+    data:[{
+
+    }]
     }
   }
-
   setSwitchValue = (val, ind) => {
       const tempData = JSON.parse(JSON.stringify(this.state.listKeys));
-      tempData[ind].switch = val;
+      tempData[ind].bool = val;
       this.setState({ listKeys: tempData });
+      reactotron.log(this.state.listKeys)
+  }
+
+  handleSubmit = () => {    
+      const {user,medico,animal} = this.props.navigation.state.params
+      let symptoms = []
+      this.state.listKeys.map(({key,bool})=> {
+          if(bool){
+              symptoms.push(key)
+          }
+      })
+      let os = {
+        user,
+        medico,
+        animal,
+        symptoms
+    }
+      this.props.navigation.navigate('tela para confirmar agendamento', os);
+
   }
 
   listItem = ({item, index}) => (
@@ -42,7 +63,7 @@ class InterestsList extends Component {
         trackColor={{true:'red'}}
         thumbColor={'#fff'}
         onValueChange={(value) => this.setSwitchValue(value, index)}
-        value={item.switch}
+        value={item.bool}
       />
     </View>
     <View style={{borderColor:'#efe',borderWidth:0.5}} />
@@ -60,7 +81,7 @@ class InterestsList extends Component {
         <TouchableOpacity
           style={styles.fab}
           onPress={() => {
-            navigation.navigate('AnimalRegister', navigation.state.params);
+              this.handleSubmit();
           }}>
           <Icon name={'arrow-circle-right'} size={50} />
         </TouchableOpacity>
