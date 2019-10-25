@@ -16,6 +16,7 @@ import UserProfileEdit from './Pages/UserProfileEdit'
 import EditPassword from './Pages/EditPassword';
 import AnimalDetails from './Pages/AnimalDetails'
 import AnimalSelect from './Pages/AnimalSelect'
+import OrdemServico from './Pages/OrdemServico'
 import sinptomsList from './Pages/SinptomsList';
 const MainNavigator = createStackNavigator(
   {
@@ -29,6 +30,7 @@ const MainNavigator = createStackNavigator(
     UserRegister,
     UserProfile,
     AddressForm,
+    OrdemServico,
     RegistrationType,
     PetList,
     UserProfileEdit,
