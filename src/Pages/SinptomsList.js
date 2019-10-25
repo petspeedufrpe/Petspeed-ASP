@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, View, Switch,TouchableOpacity } from 'react-native';
 import reactotron from 'reactotron-react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
-
+import api from '../services/api';
 
 class InterestsList extends Component {
   constructor() {
@@ -35,6 +35,18 @@ class InterestsList extends Component {
       tempData[ind].bool = val;
       this.setState({ listKeys: tempData });
       reactotron.log(this.state.listKeys)
+  }
+
+  apiService = async ()=> {
+      try{
+          const response = await api.get('/getAllSintomas');
+          const data = response.data
+          this.setState({
+              listKeys:{data,bool:false}
+            })
+      } 
+      catch(e){
+      }
   }
 
   handleSubmit = () => {    
