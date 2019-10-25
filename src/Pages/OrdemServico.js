@@ -17,11 +17,78 @@ import api from '../services/api.js';
 import getRealm from '../services/realmConnection.js';
 import reactotron from 'reactotron-react-native';
 
-export default function Login({navigation}) {
-    //to do
+export default function OrdemServico({navigation}) {
+  const validationSchema = yup.object().shape({
+    descricao: yup
+      .string()
+      .label('descricao')
+      //.required('Favor preencher a descrição'),
+  });
+
+  async function handleOrdemServico(values) {
+    try {
+      const response = await api.post('/ordemServico/criarOrdemServico', values);
+      navigation.navigate('Main');
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+
   return (
-    null
-  )
+    <View style={styles.container}>
+      <Formik
+        initialValues={{
+          descricao: '',
+          idMedico: '',
+          idCliente: '',
+          idAnimal: '',
+          idtriagem: '',
+          prioridade:'',
+          status: "Em aguardo",
+          //idPessoa: navigation.state.params.id,
+        }}
+        onSubmit={async (values, actions) => {
+          const resp = await handleOrdemServico(values); //gambiarra para pegar o valor de quando nao loga
+          if (resp) {
+            ToastAndroid.show(resp, ToastAndroid.SHORT);
+          }
+          setTimeout(() => {
+            actions.setSubmitting(false);
+          }, 1000);
+        }}
+        validationSchema={validationSchema}>
+        {props => (
+          <>
+            <Image
+              source={require('../assets/petspeed-logo-text.png')}
+              resizeMode="center"
+            />
+            <TextInput
+              placeholder="Descrição"
+              style={styles.input}
+              returnKeyType={'next'}
+              onChangeText={props.handleChange('descricao')}
+              blurOnSubmit={false}
+              onBlur={props.handleBlur('descricao')}
+            />
+            <Text style={{color: 'red'}}>
+              {props.touched.descricao && props.errors.descricao}
+            </Text>
+
+            {props.isSubmitting ? (
+              <ActivityIndicator />
+            ) : (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={props.handleSubmit}>
+                <Text style={styles.buttonText}>Cadastrar Ordem de Serviço</Text>
+              </TouchableOpacity>
+            )}
+          </>
+        )}
+      </Formik>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
