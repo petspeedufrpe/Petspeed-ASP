@@ -51,7 +51,7 @@ class InterestsList extends Component {
         animal,
         symptoms
     }
-      this.props.navigation.navigate('tela para confirmar agendamento', os);
+      this.props.navigation.navigate('ordemServico', os);
 
   }
 
