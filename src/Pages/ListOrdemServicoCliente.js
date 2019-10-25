@@ -53,7 +53,7 @@ export default function PetList({navigation}) {
               <View style={styles.listItem}>
                 <Text style={styles.nome}>{`Descrição: ${item.descricao}`}</Text>
                 <Text style={styles.nome}>{`Animal: ${item.animal.nome}`}</Text>
-                <Text style={styles.nome}>{`Medico: ${item.medico.nome}`}</Text>
+                <Text style={styles.nome}>{`CRMV: ${item.medico.crmv}`}</Text>
                 <Text style={styles.nome}>{`Status: ${item.status}`}</Text>
               </View>
             </TouchableOpacity>
