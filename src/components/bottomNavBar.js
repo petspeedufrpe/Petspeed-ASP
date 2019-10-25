@@ -15,7 +15,11 @@ export default function BottomNavBar({navigation}) {
         }}>
         <Icon name="paw" size={22} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.tabButton}>
+      <TouchableOpacity
+        style={styles.tabButton}
+        onPress={() => {
+          navigation.navigate('ListOrdemServicoCliente', navigation.state.params);
+        }}>
         <Icon name="ambulance" size={22} />
       </TouchableOpacity>
       <TouchableOpacity

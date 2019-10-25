@@ -18,6 +18,8 @@ import AnimalDetails from './Pages/AnimalDetails'
 import AnimalSelect from './Pages/AnimalSelect'
 import OrdemServico from './Pages/OrdemServico'
 import SinptomsList from './Pages/SinptomsList';
+import ListOrdemServicoCliente from './Pages/ListOrdemServicoCliente';
+
 const MainNavigator = createStackNavigator(
   {
     Login,
@@ -38,6 +40,7 @@ const MainNavigator = createStackNavigator(
     AnimalDetails,
     AnimalSelect,
     SinptomsList,
+    ListOrdemServicoCliente,
   },
   {
     headerMode: 'none',

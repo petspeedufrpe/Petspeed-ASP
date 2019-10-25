@@ -19,7 +19,7 @@ import reactotron from 'reactotron-react-native';
 
 export default function OrdemServico({navigation}) {
   const os = navigation.state.params;
-  //const {user, medico, animal, symptoms} = os
+  const {user, medico, animal, symptoms} = os
   //const {idUser} = user;
   //const {idMedico} = medico;
   //const {idAnimal} = animal
@@ -58,9 +58,9 @@ export default function OrdemServico({navigation}) {
       <Formik
         initialValues={{
           descricao: '',
-          idMedico: '21',
+          idMedico: medico,
           idCliente: '13',
-          idAnimal: '12',
+          idAnimal: animal,
           idtriagem: '4',
           prioridade:'',
           status: "Em aguardo",
