@@ -58,9 +58,9 @@ export default function OrdemServico({navigation}) {
       <Formik
         initialValues={{
           descricao: '',
-          idMedico: medico,
+          idMedico: '21',
           idCliente: '13',
-          idAnimal: animal,
+          idAnimal: '12',
           idtriagem: '4',
           prioridade:'',
           status: "Em aguardo",
