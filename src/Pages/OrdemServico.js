@@ -19,10 +19,10 @@ import reactotron from 'reactotron-react-native';
 
 export default function OrdemServico({navigation}) {
   const os = navigation.state.params;
-  const {user, medico, animal, symptoms} = os
-  const {idUser} = user;
-  const {idMedico} = medico;
-  const {idAnimal} = animal
+  //const {user, medico, animal, symptoms} = os
+  //const {idUser} = user;
+  //const {idMedico} = medico;
+  //const {idAnimal} = animal
 
 
   const validationSchema = yup.object().shape({
@@ -33,9 +33,21 @@ export default function OrdemServico({navigation}) {
   });
 
   async function handleOrdemServico(values) {
-    try {
-      const response = await api.post('/ordemServico/criarOrdemServico', values);
-      navigation.navigate('Main');
+    const {descricao, idMedico, idCliente, idAnimal, idtriagem,prioridade,
+      status} = values
+      try {
+      const response = await api.post('ordemServico/criarOrdemServico', {
+        descricao,
+        idMedico, 
+        idCliente,
+        idAnimal,
+        idtriagem,
+        prioridade,
+        status,
+      });
+      if (response.status === 200) {
+        navigation.navigate('Main');
+      }
     } catch (e) {
       console.log(e.message);
     }
@@ -46,12 +58,22 @@ export default function OrdemServico({navigation}) {
       <Formik
         initialValues={{
           descricao: '',
-          idMedico: idMedico,
+          idMedico: '21',
           idCliente: '13',
-          idAnimal: idAnimal,
+          idAnimal: '12',
           idtriagem: '4',
           prioridade:'',
           status: "Em aguardo",
+        }}
+        onSubmit={async (values, actions) => {
+          const resp = await handleOrdemServico(values); //gambiarra para pegar o valor de quando nao loga
+          if (resp) {
+            ToastAndroid.show(resp, ToastAndroid.SHORT);
+            navigation.navigate('Main');
+          }
+          setTimeout(() => {
+            actions.setSubmitting(false);
+          }, 1000);
         }}
         validationSchema={validationSchema}>
         {props => (
@@ -71,6 +93,8 @@ export default function OrdemServico({navigation}) {
             <Text style={{color: 'red'}}>
               {props.touched.descricao && props.errors.descricao}
             </Text>
+
+            
 
             {props.isSubmitting ? (
               <ActivityIndicator />
