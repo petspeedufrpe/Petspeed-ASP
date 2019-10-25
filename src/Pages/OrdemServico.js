@@ -18,6 +18,13 @@ import getRealm from '../services/realmConnection.js';
 import reactotron from 'reactotron-react-native';
 
 export default function OrdemServico({navigation}) {
+  const os = navigation.state.params;
+  const {user, medico, animal, symptoms} = os
+  const {idUser} = user;
+  const {idMedico} = medico;
+  const {idAnimal} = animal
+
+
   const validationSchema = yup.object().shape({
     descricao: yup
       .string()
@@ -39,22 +46,12 @@ export default function OrdemServico({navigation}) {
       <Formik
         initialValues={{
           descricao: '',
-          idMedico: '',
-          idCliente: '',
-          idAnimal: '',
-          idtriagem: '',
+          idMedico: idMedico,
+          idCliente: '13',
+          idAnimal: idAnimal,
+          idtriagem: '4',
           prioridade:'',
           status: "Em aguardo",
-          //idPessoa: navigation.state.params.id,
-        }}
-        onSubmit={async (values, actions) => {
-          const resp = await handleOrdemServico(values); //gambiarra para pegar o valor de quando nao loga
-          if (resp) {
-            ToastAndroid.show(resp, ToastAndroid.SHORT);
-          }
-          setTimeout(() => {
-            actions.setSubmitting(false);
-          }, 1000);
         }}
         validationSchema={validationSchema}>
         {props => (

@@ -63,7 +63,7 @@ class InterestsList extends Component {
         animal,
         symptoms
     }
-      this.props.navigation.navigate('ordemServico', os);
+      this.props.navigation.navigate('OrdemServico', os);
 
   }
 
