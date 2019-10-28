@@ -36,13 +36,15 @@ export default function Login({navigation}) {
       const response = await api.post('/usuario/login', values);
       if (response.status === 200) {
         const res = response.data;
-        const {id, email, account, nome} = res.user;
+        const {id, email, idCliente, idMedico, nome} = res.user;
         const {token} = res;
         const data = {
           id,
           token,
           email,
           nome,
+          idCliente,
+          idMedico,
         };
         try {
           const realm = await getRealm();
@@ -52,9 +54,9 @@ export default function Login({navigation}) {
         } catch (e) {
           alert(e.message);
         }
-        if (account === 'cliente') {
+        if (idCliente) {
           navigation.navigate('Main', data);
-        } else if (account === 'medico') {
+        } else if (idMedico) {
           navigation.navigate('VetOrderCard', data);
         }
       }

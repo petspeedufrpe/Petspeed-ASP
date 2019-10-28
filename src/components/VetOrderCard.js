@@ -17,22 +17,22 @@ import {bold} from 'ansi-colors';
 import {BOLD_WEIGHT} from 'jest-matcher-utils';
 
 export default function VetOrderCard({navigation}) {
-  const medico = navigation.state.params;
-  const {email, id, nome} = medico;
+  const user = navigation.state.params;
+  const {id, email, nome, idMedico} = user;
   const [data, setData] = useState([]);
+  
 
   useLayoutEffect(() => {
     async function loadOS() {
       try {
-        const {id} = medico;
-        const response = await api.get(`ordemServico/getOsByMedico/${21}`);
+        const response = await api.get(`ordemServico/getOsByMedico/${idMedico}`);
         setData(response.data);
       } catch (error) {
         console.warn(error.message);
       }
     }
     loadOS();
-  }, [medico]);
+  }, [user]);
 
   return (
     <View style={{flex: 3}}>
