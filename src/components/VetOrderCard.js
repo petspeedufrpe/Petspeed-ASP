@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -10,241 +10,30 @@ import {
   ToastAndroid,
   FlatList,
 } from 'react-native';
+
+import api from '../services/api';
 import {List} from 'realm';
 import {bold} from 'ansi-colors';
 import {BOLD_WEIGHT} from 'jest-matcher-utils';
 
-const response = [
-  {
-    animal: {
-      id: 2352,
-      nome: 'Tchutxuba',
-      raca: 'unknown',
-      peso: 5.234,
-      nascimento: 2017,
-      foto: '4j35g3l4g63ç46h34lg623l5h35',
-      idPessoa: 23,
-    },
-    cliente: {
-      id: 2352,
-      idusuario: 1232,
-      idPessoa: 23,
-      pessoa: {
-        id: 1231,
-        nome: 'Irineu VNSNEkkk',
-        cpf: 214125,
-        idusuario: 123,
-      },
-    },
-
-    medico: {
-      id: 24124,
-      cpf: 12414,
-      crmv: 124124,
-      estado: 'PE',
-      pessoa: {
-        id: 7457,
-        nome: 'trhrth',
-        cpf: 346346,
-        idusuario: 4566,
-      },
-    },
-    descricao: 'sadasdasd',
-    sintomas: ['asadasd', 'fdgsgb', 'sdgsdgsdg', 'wetwet'],
-    prioridade: 2,
-    status: 'open',
-    timestamp: 2019101521007,
-    local: {
-      latitude: -8.34534,
-      longitude: -35.3543,
-    },
-    id: 144124,
-  },
-  {
-    animal: {
-      id: 2352,
-      nome: 'Pitoco',
-      raca: 'Pincher',
-      peso: 0.234,
-      nascimento: 2017,
-      foto: '4j35g3l4g63ç46h34lg623l5h35',
-      idPessoa: 23,
-    },
-    cliente: {
-      id: 2352,
-      idusuario: 1232,
-      idPessoa: 23,
-      pessoa: {
-        id: 1231,
-        nome: 'Jose Arineu',
-        cpf: 214125,
-        idusuario: 123,
-      },
-    },
-
-    medico: {
-      id: 24124,
-      cpf: 12414,
-      crmv: 124124,
-      estado: 'PE',
-      pessoa: {
-        id: 7457,
-        nome: 'trhrth',
-        cpf: 346346,
-        idusuario: 4566,
-      },
-    },
-    descricao: 'sadasdasd',
-    sintomas: ['asadasd', 'fdgsgb', 'sdgsdgsdg', 'wetwet'],
-    prioridade: 1,
-    status: 'open',
-    timestamp: 2019101521007,
-    local: {
-      latitude: -8.522,
-      longitude: -35.5323,
-    },
-    id: 245716,
-  },
-  {
-    animal: {
-      id: 2352,
-      nome: 'doguinho',
-      raca: 'pooddle',
-      peso: 5.234,
-      nascimento: 2017,
-      foto: '4j35g3l4g63ç46h34lg623l5h35',
-      idPessoa: 23,
-    },
-    cliente: {
-      id: 2352,
-      idusuario: 1232,
-      idPessoa: 23,
-      pessoa: {
-        id: 1231,
-        nome: 'Seu Zé',
-        cpf: 214125,
-        idusuario: 123,
-      },
-    },
-
-    medico: {
-      id: 24124,
-      cpf: 12414,
-      crmv: 124124,
-      estado: 'PE',
-      pessoa: {
-        id: 7457,
-        nome: 'Marciel andrade',
-        cpf: 346346,
-        idusuario: 4566,
-      },
-    },
-    descricao: 'sadasdasd',
-    sintomas: ['asadasd', 'fdgsgb', 'sdgsdgsdg', 'wetwet'],
-    prioridade: 1,
-    status: 'open',
-    timestamp: 2019101521007,
-    local: {
-      latitude: -8.34534,
-      longitude: -35.3543,
-    },
-    id: 83635,
-  },
-  {
-    animal: {
-      id: 2352,
-      nome: 'Zambetão',
-      raca: 'yorkshire',
-      peso: 5.234,
-      nascimento: 2017,
-      foto: '4j35g3l4g63ç46h34lg623l5h35',
-      idPessoa: 23,
-    },
-    cliente: {
-      id: 2352,
-      idusuario: 1232,
-      idPessoa: 23,
-      pessoa: {
-        id: 1231,
-        nome: 'Sansin Fausthanos',
-        cpf: 214125,
-        idusuario: 123,
-      },
-    },
-
-    medico: {
-      id: 24124,
-      cpf: 12414,
-      crmv: 124124,
-      estado: 'PE',
-      pessoa: {
-        id: 7457,
-        nome: 'Marciel andrade',
-        cpf: 346346,
-        idusuario: 4566,
-      },
-    },
-    descricao: 'sadasdasd',
-    sintomas: ['asadasd', 'fdgsgb', 'sdgsdgsdg', 'wetwet'],
-    prioridade: 0,
-    status: 'open',
-    timestamp: 2019101521007,
-    local: {
-      latitude: -8.34534,
-      longitude: -35.3543,
-    },
-    id: 83635,
-  },
-  {
-    animal: {
-      id: 2352,
-      nome: 'Tiquin',
-      raca: 'Não sei',
-      peso: 5.234,
-      nascimento: 2017,
-      foto: '4j35g3l4g63ç46h34lg623l5h35',
-      idPessoa: 23,
-    },
-    cliente: {
-      id: 2352,
-      idusuario: 1232,
-      idPessoa: 23,
-      pessoa: {
-        id: 1231,
-        nome: 'Michalelo Telófliflo',
-        cpf: 214125,
-        idusuario: 123,
-      },
-    },
-
-    medico: {
-      id: 24124,
-      cpf: 12414,
-      crmv: 124124,
-      estado: 'PE',
-      pessoa: {
-        id: 7457,
-        nome: 'Marciel andrade',
-        cpf: 346346,
-        idusuario: 4566,
-      },
-    },
-    descricao: 'sadasdasd',
-    sintomas: ['asadasd', 'fdgsgb', 'sdgsdgsdg', 'wetwet'],
-    prioridade: 0,
-    status: 'open',
-    timestamp: 2019101521007,
-    local: {
-      latitude: -8.34534,
-      longitude: -35.3543,
-    },
-    id: 83635,
-  },
-];
-
 export default function VetOrderCard({navigation}) {
   const medico = navigation.state.params;
-  const {email} = medico;
+  const {email, id, nome} = medico;
+  const [data, setData] = useState([]);
+
+  useLayoutEffect(() => {
+    async function loadOS() {
+      try {
+        const {id} = medico;
+        const response = await api.get(`ordemServico/getOsByMedico/${21}`);
+        setData(response.data);
+      } catch (error) {
+        console.warn(error.message);
+      }
+    }
+    loadOS();
+  }, [medico]);
+
   return (
     <View style={{flex: 3}}>
       <View style={styles.container}>
@@ -254,12 +43,12 @@ export default function VetOrderCard({navigation}) {
             alignSelf: 'center',
             fontSize: 15,
             fontWeight: 'bold',
-          }}>{`Olá ${email}, Estas são as suas ordens de serviço`}</Text>
+          }}>{`Olá ${nome}, Estas são as suas ordens de serviço`}</Text>
       </View>
       <FlatList
         style={styles.list}
-        data={response}
-        keyExtractor={response => response.prioridade.toString()}
+        data={data}
+        keyExtractor={data => data.prioridade.toString()}
         renderItem={({item}) => (
           <View
             style={
@@ -285,7 +74,7 @@ export default function VetOrderCard({navigation}) {
                   : item.prioridade === 1
                   ? {...styles.petOwnerName, color: '#00b098'}
                   : styles.petOwnerName
-              }>{`Nome do cliente: ${item.cliente.pessoa.nome}`}</Text>
+              }>{`Nome do cliente: ${item.cliente.id}`}</Text>
             <View style={styles.animalContainer}>
               <Text
                 style={
