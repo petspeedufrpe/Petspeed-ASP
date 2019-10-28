@@ -74,7 +74,7 @@ export default function VetOrderCard({navigation}) {
                   : item.prioridade === 1
                   ? {...styles.petOwnerName, color: '#00b098'}
                   : styles.petOwnerName
-              }>{`Nome do cliente: ${item.cliente.id}`}</Text>
+              }>{`Nome do cliente: ${item.cliente.pessoa.nome}`}</Text>
             <View style={styles.animalContainer}>
               <Text
                 style={
