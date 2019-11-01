@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {
   View,
   Text,
@@ -18,13 +18,30 @@ import getRealm from '../services/realmConnection.js';
 import reactotron from 'reactotron-react-native';
 
 export default function OrdemServico({navigation}) {
+  // os tem que ir o idCliente,idAnimal,idMedico,descricao,status,prioridade,idTriagem;
   const os = navigation.state.params;
   const {user, medico, animal, symptoms} = os
-  //const {idUser} = user;
-  //const {idMedico} = medico;
-  //const {idAnimal} = animal
-
-
+  reactotron.log(user);
+  const triagem ={
+    sintomas:os.symptoms.join(','),
+    descricao:""
+  };
+  //reactotron.log(os);
+  let object = {
+    ordemServico:{
+    idCliente:user.idCliente,
+    idAnimal: animal.id,
+    idMedico: medico.id,
+    descricao:"",
+    status:"aguardando",
+    prioridade:1,
+    idTriagem:""
+  },
+  triagem:{
+    sintomas:symptoms.join(','),
+    outros:""
+  }
+}
   const validationSchema = yup.object().shape({
     descricao: yup
       .string()
@@ -33,23 +50,19 @@ export default function OrdemServico({navigation}) {
   });
 
   async function handleOrdemServico(values) {
-    const {descricao, idMedico, idCliente, idAnimal, idtriagem,prioridade,
+    const {descricao, idMedico, idCliente, idAnimal,prioridade,
       status} = values
       try {
-      const response = await api.post('ordemServico/criarOrdemServico', {
-        descricao,
-        idMedico, 
-        idCliente,
-        idAnimal,
-        idtriagem,
-        prioridade,
-        status,
-      });
+        triagem.descricao = descricao; 
+        object.ordemServico.descricao = descricao;
+        reactotron.log(object);
+      const response = await api.post('ordemServico/criarOrdemServico',object);
+      reactotron.log(response);
       if (response.status === 200) {
         navigation.navigate('Main');
       }
     } catch (e) {
-      console.log(e.message);
+      reactotron.log(e.message);
     }
   }
 
