@@ -53,14 +53,18 @@ export default function OrdemServico({navigation}) {
     <View style={styles.container}>
       <Formik
         initialValues={{
-        idCliente: "",
-        idAnimal: "",
-        idMedico: "",
-        descricao: "",
-        status: "",
-        prioridade "",
-        idtriagem: symptoms,
-        }}
+          triagem: {
+            sintomas: symptoms,
+          },
+          ordemServico:{
+            idCliente: "13",
+            idAnimal: "26",
+            idMedico: "21",
+            descricao: "",
+            status: "Em aguardo",
+            prioridade: "1",
+        }
+      }}
         onSubmit={async (values, actions) => {
           const resp = await handleOrdemServico(values); //gambiarra para pegar o valor de quando nao loga
           if (resp) {
