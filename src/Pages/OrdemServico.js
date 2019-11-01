@@ -20,21 +20,22 @@ import reactotron from 'reactotron-react-native';
 export default function OrdemServico({navigation}) {
   const os = navigation.state.params;
   const {user, medico, animal, symptoms} = os
-  //const {idUser} = user;
-  //const {idMedico} = medico;
-  //const {idAnimal} = animal
 
 
   const validationSchema = yup.object().shape({
     descricao: yup
       .string()
       .label('descricao')
-      //.required('Favor preencher a descrição'),
   });
 
   async function handleOrdemServico(values) {
     const {descricao, idMedico, idCliente, idAnimal, idtriagem,prioridade,
       status} = values
+      try{
+        const response = await api.post('triagem/criarTriagem', symptoms );
+      } catch(e) {
+        console.log(e.message)
+      }
       try {
       const response = await api.post('ordemServico/criarOrdemServico', {
         descricao,
