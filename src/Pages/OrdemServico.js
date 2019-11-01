@@ -20,12 +20,16 @@ import reactotron from 'reactotron-react-native';
 export default function OrdemServico({navigation}) {
   const os = navigation.state.params;
   const {user, medico, animal, symptoms} = os
+  //const {idUser} = user;
+  //const {idMedico} = medico;
+  //const {idAnimal} = animal
 
 
   const validationSchema = yup.object().shape({
     descricao: yup
       .string()
       .label('descricao')
+      //.required('Favor preencher a descrição'),
   });
 
   async function handleOrdemServico(values) {
@@ -33,13 +37,13 @@ export default function OrdemServico({navigation}) {
       status} = values
       try {
       const response = await api.post('ordemServico/criarOrdemServico', {
+        descricao,
+        idMedico, 
         idCliente,
         idAnimal,
-        idMedico,
-        descricao,
-        status,
-        prioridade,
         idtriagem,
+        prioridade,
+        status,
       });
       if (response.status === 200) {
         navigation.navigate('Main');
@@ -53,18 +57,14 @@ export default function OrdemServico({navigation}) {
     <View style={styles.container}>
       <Formik
         initialValues={{
-          triagem: {
-            sintomas: symptoms,
-          },
-          ordemServico:{
-            idCliente: "13",
-            idAnimal: "26",
-            idMedico: "21",
-            descricao: "",
-            status: "Em aguardo",
-            prioridade: "1",
-        }
-      }}
+          descricao: '',
+          idMedico: '21',
+          idCliente: '13',
+          idAnimal: '12',
+          idtriagem: '4',
+          prioridade:'',
+          status: "Em aguardo",
+        }}
         onSubmit={async (values, actions) => {
           const resp = await handleOrdemServico(values); //gambiarra para pegar o valor de quando nao loga
           if (resp) {
