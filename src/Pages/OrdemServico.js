@@ -31,20 +31,15 @@ export default function OrdemServico({navigation}) {
   async function handleOrdemServico(values) {
     const {descricao, idMedico, idCliente, idAnimal, idtriagem,prioridade,
       status} = values
-      try{
-        const response = await api.post('triagem/criarTriagem', symptoms );
-      } catch(e) {
-        console.log(e.message)
-      }
       try {
       const response = await api.post('ordemServico/criarOrdemServico', {
-        descricao,
-        idMedico, 
         idCliente,
         idAnimal,
-        idtriagem,
-        prioridade,
+        idMedico,
+        descricao,
         status,
+        prioridade,
+        idtriagem,
       });
       if (response.status === 200) {
         navigation.navigate('Main');
@@ -58,13 +53,13 @@ export default function OrdemServico({navigation}) {
     <View style={styles.container}>
       <Formik
         initialValues={{
-          descricao: '',
-          idMedico: '21',
-          idCliente: '13',
-          idAnimal: '12',
-          idtriagem: '4',
-          prioridade:'',
-          status: "Em aguardo",
+        idCliente: "",
+        idAnimal: "",
+        idMedico: "",
+        descricao: "",
+        status: "",
+        prioridade "",
+        idtriagem: symptoms,
         }}
         onSubmit={async (values, actions) => {
           const resp = await handleOrdemServico(values); //gambiarra para pegar o valor de quando nao loga
